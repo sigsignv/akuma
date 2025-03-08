@@ -1,0 +1,22 @@
+{
+	"name": "node",
+
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+
+	"containerEnv": {
+		"TZ": "${localEnv:TZ:Asia/Tokyo}"
+	},
+
+	"remoteUser": "node",
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"EditorConfig.EditorConfig",
+				"ms-azuretools.vscode-docker"
+			]
+		}
+	}
+}
