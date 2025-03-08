@@ -1,17 +1,29 @@
+import { Viewer } from "~/viewer/Viewer";
+import { fetchBookmark } from "../viewer/Bookmark";
 import type { Route } from "./+types/_index";
-import { Welcome } from "../welcome/welcome";
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: "New React Router App" },
     { name: "description", content: "Welcome to React Router!" },
   ];
 }
 
-export function loader({ context }: Route.LoaderArgs) {
-  return { message: context.cloudflare.env.VALUE_FROM_CLOUDFLARE };
+export async function loader({ request }: Route.LoaderArgs) {
+  const u = new URL(request.url);
+  const url = u.searchParams.get("url");
+
+  if (!url) {
+    return {};
+  }
+
+  const entry = await fetchBookmark(url);
+
+  return {
+    bookmark: entry,
+  };
 }
 
-export default function Home({ loaderData }: Route.ComponentProps) {
-  return <Welcome message={loaderData.message} />;
+export default function Index({ loaderData }: Route.ComponentProps) {
+  return <Viewer bookmark={loaderData.bookmark} />;
 }
