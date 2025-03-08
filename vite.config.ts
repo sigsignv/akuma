@@ -22,4 +22,7 @@ export default defineConfig(({ isSsrBuild }) => ({
     reactRouter(),
     tsconfigPaths(),
   ],
+  server: {
+    host: "0.0.0.0"
+  }
 }));
