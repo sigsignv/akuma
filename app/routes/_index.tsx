@@ -27,5 +27,27 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Index({ loaderData }: Route.ComponentProps) {
   const { bookmark } = loaderData;
 
-  return <Viewer bookmark={bookmark} />;
+  return (
+    <div className="min-h-screen flex flex-col">
+      <header className="bg-gray-800 text-white p-4">
+        <div className="container mx-auto">
+          <h1 className="text-2xl font-bold">Akuma</h1>
+        </div>
+      </header>
+
+      <main className="flex-grow container mx-auto p-4">
+        <div className="py-4">
+          <Viewer bookmark={bookmark} />
+        </div>
+      </main>
+
+      <footer className="bg-gray-800 text-white p-4">
+        <div className="container mx-auto">
+          <p>
+            <a href="https://github.com/sigsignv/akuma">Source</a>
+          </p>
+        </div>
+      </footer>
+    </div>
+  );
 }
