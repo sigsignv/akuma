@@ -1,10 +1,9 @@
 import Bookmark from "./Bookmark";
-import type { BookmarkEntry } from "./Bookmark";
 
 type ViewerProps = {
-  bookmark?: BookmarkEntry;
+  bookmark?: React.ComponentProps<typeof Bookmark>["bookmark"];
 };
 
 export function Viewer({ bookmark }: ViewerProps) {
-  return <Bookmark entry={bookmark} />;
+  return <Bookmark bookmark={bookmark} />;
 }

@@ -1,17 +1,23 @@
-export type BookmarkEntry = {
-  count: number;
-  entry_url: string;
-  bookmarks: BookmarkComment[];
-};
+import { z } from "zod";
 
-type BookmarkComment = {
-  user: string;
-  tags: string[];
-  timestamp: string;
-  comment: string;
-};
+const BookmarkComment = z.object({
+  user: z.string(),
+  tags: z.string().array(),
+  timestamp: z.string(),
+  comment: z.string(),
+});
 
-export async function fetchBookmark(url: string) {
+const BookmarkEntry = z.nullable(
+  z.object({
+    count: z.number(),
+    entry_url: z.string(),
+    bookmarks: z.array(BookmarkComment),
+  }),
+);
+
+type BookmarkEntry = NonNullable<z.infer<typeof BookmarkEntry>>;
+
+export async function fetchBookmark(url: string): Promise<BookmarkEntry> {
   const u = new URL("https://b.hatena.ne.jp/entry/json/");
   u.searchParams.set("url", url);
 
@@ -20,36 +26,50 @@ export async function fetchBookmark(url: string) {
       "User-Agent": "akuma (Anonymous buKUMA viewer)",
     },
   });
+
   if (!resp.ok) {
-    throw new Error("Failed to fetch bookmarks");
+    throw new Error("Failed to fetch bookmark");
   }
 
-  const entry = (await resp.json()) as BookmarkEntry;
-  console.log({ entry });
-  const c = entry.bookmarks.length;
-  console.log({ count: c });
-  return entry;
+  const json = await resp.json();
+  const bookmark = BookmarkEntry.parse(json);
+
+  if (!bookmark) {
+    const encodedUrl = url.replaceAll(/#/g, "%23");
+    return {
+      count: 0,
+      entry_url: `https://b.hatena.ne.jp/entry/${encodedUrl}`,
+      bookmarks: [],
+    };
+  }
+
+  // Remove bookmarks with no comment
+  bookmark.bookmarks = bookmark.bookmarks.filter((value) => value.comment !== "");
+
+  return bookmark;
 }
 
 type BookmarkProps = {
-  entry?: BookmarkEntry;
+  bookmark?: BookmarkEntry;
 };
 
-export default function Bookmark({ entry }: BookmarkProps) {
-  if (!entry) {
-    return <div>hoge</div>;
+export default function Bookmark({ bookmark }: BookmarkProps) {
+  if (!bookmark) {
+    return <div>no bookmark</div>;
   }
 
   return (
     <main className="pt-16 pb-4">
-      <h2 className="text-2xl font-bold">はてなブックマーク</h2>
+      <h2 className="text-2xl font-bold">
+        <a href={bookmark.entry_url}>はてなブックマーク</a>
+      </h2>
       <ul className="list-disc ml-8">
-        {entry.bookmarks.map((bookmark) => (
-          <li key={bookmark.user}>
-            <div className="text-lg font-bold">{bookmark.user}</div>
-            <div className="text-sm text-gray-600">{bookmark.timestamp}</div>
-            <div className="text-sm text-gray-600">{bookmark.tags.join(", ")}</div>
-            <div>{bookmark.comment}</div>
+        {bookmark.bookmarks.map((comment) => (
+          <li key={comment.user}>
+            <div className="text-lg font-bold">{comment.user}</div>
+            <div className="text-sm text-gray-600">{comment.timestamp}</div>
+            <div className="text-sm text-gray-600">{comment.tags.join(", ")}</div>
+            <div>{comment.comment}</div>
           </li>
         ))}
       </ul>

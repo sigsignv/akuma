@@ -17,13 +17,15 @@ export async function loader({ request }: Route.LoaderArgs) {
     return {};
   }
 
-  const entry = await fetchBookmark(url);
+  const bookmark = await fetchBookmark(url);
 
   return {
-    bookmark: entry,
+    bookmark,
   };
 }
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-  return <Viewer bookmark={loaderData.bookmark} />;
+  const { bookmark } = loaderData;
+
+  return <Viewer bookmark={bookmark} />;
 }
