@@ -18,6 +18,7 @@ const BookmarkEntry = z.nullable(
 type BookmarkEntry = NonNullable<z.infer<typeof BookmarkEntry>>;
 
 export async function fetchBookmark(url: string): Promise<BookmarkEntry> {
+  // ref: https://developer.hatena.ne.jp/ja/documents/bookmark/apis/getinfo/
   const u = new URL("https://b.hatena.ne.jp/entry/json/");
   u.searchParams.set("url", url);
 
