@@ -60,22 +60,25 @@ export default function Bookmark({ bookmark }: BookmarkProps) {
   }
 
   return (
-    <div className="pt-16 pb-4">
+    <div className="pt-4 pb-4">
       <h2 className="text-2xl font-bold">
         <a href={bookmark.entry_url}>はてなブックマーク ({bookmark.count})</a>
       </h2>
-      <ul className="ml-8">
+      <ul className="space-y-4">
         {bookmark.bookmarks.map((value) => (
-          <li key={value.user}>
-            <img
-              src={`https://cdn.profile-image.st-hatena.com/users/${value.user}/profile.png`}
-              alt={value.user}
-              className="w-8 h-8 inline-block"
-              decoding="async"
-            />
-            <div className="text-lg font-bold">{value.user}</div>
-            <div className="text-sm text-gray-600">{value.timestamp}</div>
-            <div>{value.comment}</div>
+          <li key={value.user} className="space-y-2">
+            <div className="flex items-center gap-1">
+              <img
+                src={`https://cdn.profile-image.st-hatena.com/users/${value.user}/profile.png`}
+                alt={value.user}
+                decoding="async"
+                width={24}
+                height={24}
+              />
+              <span className="text-sm font-bold">{value.user}</span>
+              <span className="text-sm text-gray-600">{value.timestamp}</span>
+            </div>
+            <div className="ml-6">{value.comment}</div>
           </li>
         ))}
       </ul>
