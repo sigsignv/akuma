@@ -13,7 +13,7 @@
         }
     ],
     "start_url": "/",
-    "display": "browser",
+    "display": "minimal-ui",
     "share_target": {
         "action": "/",
         "method": "GET",
