@@ -59,10 +59,15 @@ export default function Bookmark({ bookmark }: BookmarkProps) {
     return <div>no bookmark</div>;
   }
 
+  const allBookmarkCount = bookmark.count;
+  const commentedBookmarkCount = bookmark.bookmarks.length;
+
   return (
     <div className="pt-4 pb-4">
       <h2 className="text-2xl font-bold">
-        <a href={bookmark.entry_url}>はてなブックマーク ({bookmark.count})</a>
+        <a href={bookmark.entry_url}>
+          はてなブックマーク ({commentedBookmarkCount}/{allBookmarkCount})
+        </a>
       </h2>
       <ul className="space-y-4">
         {bookmark.bookmarks.map((value) => (
