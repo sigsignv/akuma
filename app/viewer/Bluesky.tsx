@@ -30,7 +30,7 @@ export async function fetchBlueskyPosts(url: string): Promise<Post[]> {
       },
       text: post.record.text as string,
       created_at: post.record.createdAt as string,
-      url: "", // todo: generate URL
+      url: post.uri, // todo: generate HTTPS URL
     };
   });
 
@@ -47,7 +47,20 @@ export default function Bluesky({ posts }: BlueskyProps) {
       <h2 className="text-2xl font-bold">Bluesky</h2>
       <ul className="space-y-4">
         {posts?.map((post) => (
-          <li key={post.author.id}>{post.text}</li>
+          <li key={post.url} className="space-y-2">
+            <div className="flex items-center gap-1">
+              <img
+                src={post.author.icon}
+                alt={post.author.id}
+                decoding="async"
+                width={24}
+                height={24}
+              />
+              <span className="text-sm font-bold">{post.author.name}</span>
+              <span className="text-sm text-gray-600">{post.created_at}</span>
+            </div>
+            <div className="ml-6">{post.text}</div>
+          </li>
         ))}
       </ul>
     </div>
