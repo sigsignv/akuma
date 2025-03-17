@@ -1,3 +1,4 @@
+import { fetchBlueskyPosts } from "~/viewer/Bluesky";
 import { Viewer } from "~/viewer/Viewer";
 import { fetchBookmark } from "../viewer/Bookmark";
 import type { Route } from "./+types/_index";
@@ -18,14 +19,16 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   const bookmark = await fetchBookmark(url);
+  const posts = await fetchBlueskyPosts(url);
 
   return {
     bookmark,
+    posts,
   };
 }
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-  const { bookmark } = loaderData;
+  const { bookmark, posts } = loaderData;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -37,7 +40,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
 
       <main className="flex-grow container mx-auto p-4">
         <div className="py-4">
-          <Viewer bookmark={bookmark} />
+          <Viewer bookmark={bookmark} posts={posts} />
         </div>
       </main>
 
