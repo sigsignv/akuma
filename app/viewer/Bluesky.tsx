@@ -1,4 +1,5 @@
 import { AtpAgent } from "@atproto/api";
+import type { Response as AtpResponse } from "@atproto/api/dist/client/types/app/bsky/feed/searchPosts";
 
 type Author = {
   id: string;
@@ -12,6 +13,13 @@ type Post = {
   created_at: string;
   url: string;
 };
+
+function generateUrl(post: AtpResponse["data"]["posts"][number]): string {
+  const authorId = post.author.handle;
+  const postId = post.uri.slice(post.uri.lastIndexOf("/") + 1);
+
+  return `https://bsky.app/profile/${authorId}/post/${postId}`;
+}
 
 export async function fetchBlueskyPosts(url: string): Promise<Post[]> {
   const agent = new AtpAgent({ service: "https://public.api.bsky.app" });
@@ -30,7 +38,7 @@ export async function fetchBlueskyPosts(url: string): Promise<Post[]> {
       },
       text: post.record.text as string,
       created_at: post.record.createdAt as string,
-      url: post.uri, // todo: generate HTTPS URL
+      url: generateUrl(post),
     };
   });
 
@@ -57,7 +65,9 @@ export default function Bluesky({ posts }: BlueskyProps) {
                 height={24}
               />
               <span className="text-sm font-bold">{post.author.name}</span>
-              <span className="text-sm text-gray-600">{post.created_at}</span>
+              <span className="text-sm text-gray-600">
+                <a href={post.url}>{post.created_at}</a>
+              </span>
             </div>
             <div className="ml-6">{post.text}</div>
           </li>
