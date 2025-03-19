@@ -1,3 +1,4 @@
+import { Form } from "react-router";
 import { fetchBlueskyPosts } from "~/viewer/Bluesky";
 import { Viewer } from "~/viewer/Viewer";
 import { fetchBookmark } from "../viewer/Bookmark";
@@ -22,13 +23,14 @@ export async function loader({ request }: Route.LoaderArgs) {
   const posts = await fetchBlueskyPosts(url);
 
   return {
+    url,
     bookmark,
     posts,
   };
 }
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-  const { bookmark, posts } = loaderData;
+  const { url, bookmark, posts } = loaderData;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -39,6 +41,23 @@ export default function Index({ loaderData }: Route.ComponentProps) {
       </header>
 
       <main className="flex-grow container mx-auto p-4">
+        <Form method="get" action="/" className="flex">
+          <div className="relative flex-grow">
+            <input
+              type="url"
+              name="url"
+              placeholder="URL"
+              className="w-full p-2 pr-20 rounded-l"
+              defaultValue={url}
+            />
+            <button
+              type="submit"
+              className="absolute right-0 top-0 h-full p-2 bg-blue-500 text-white rounded-r"
+            >
+              Go
+            </button>
+          </div>
+        </Form>
         <div className="py-4">
           <Viewer bookmark={bookmark} posts={posts} />
         </div>
