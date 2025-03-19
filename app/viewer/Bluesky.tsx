@@ -1,5 +1,6 @@
 import { AtpAgent } from "@atproto/api";
 import type { Response as AtpResponse } from "@atproto/api/dist/client/types/app/bsky/feed/searchPosts";
+import { filterAccountLabels } from "@atproto/api/dist/moderation/subjects/account";
 
 type Author = {
   id: string;
@@ -29,18 +30,24 @@ export async function fetchBlueskyPosts(url: string): Promise<Post[]> {
     limit: 10,
   });
 
-  const posts = response.data.posts.map((post) => {
-    return {
-      author: {
-        id: post.author.handle,
-        name: post.author.displayName,
-        icon: post.author.avatar,
-      },
-      text: post.record.text as string,
-      created_at: post.record.createdAt as string,
-      url: generateUrl(post),
-    };
-  });
+  const posts = response.data.posts
+    .filter((post) => {
+      return !filterAccountLabels(post.author.labels).some(
+        (label) => label.val === "!no-unauthenticated",
+      );
+    })
+    .map((post) => {
+      return {
+        author: {
+          id: post.author.handle,
+          name: post.author.displayName,
+          icon: post.author.avatar,
+        },
+        text: post.record.text as string,
+        created_at: post.record.createdAt as string,
+        url: generateUrl(post),
+      };
+    });
 
   return posts;
 }
