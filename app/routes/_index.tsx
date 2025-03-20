@@ -19,8 +19,11 @@ export async function loader({ request }: Route.LoaderArgs) {
     return {};
   }
 
-  const bookmark = await fetchBookmark(url);
-  const posts = await fetchBlueskyPosts(url);
+  const bookmarkPromise = fetchBookmark(url);
+  const postsPromise = fetchBlueskyPosts(url);
+
+  // todo: Error handling
+  const [bookmark, posts] = await Promise.all([bookmarkPromise, postsPromise]);
 
   return {
     url,
