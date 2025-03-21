@@ -1,3 +1,5 @@
+import { formatDistanceToNowStrict } from "date-fns";
+import { ja } from "date-fns/locale";
 import { z } from "zod";
 
 const BookmarkComment = z.object({
@@ -81,7 +83,12 @@ export default function Bookmark({ bookmark }: BookmarkProps) {
                 height={24}
               />
               <span className="text-sm font-bold">{value.user}</span>
-              <span className="text-sm text-gray-600">{value.timestamp}</span>
+              <span className="text-sm text-gray-600">
+                {formatDistanceToNowStrict(new Date(`${value.timestamp}:00 +09:00`), {
+                  addSuffix: true,
+                  locale: ja,
+                })}
+              </span>
             </div>
             <div className="ml-6">{value.comment}</div>
           </li>
