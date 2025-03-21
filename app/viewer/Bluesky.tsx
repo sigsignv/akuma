@@ -1,6 +1,8 @@
 import { AtpAgent } from "@atproto/api";
 import type { Response as AtpResponse } from "@atproto/api/dist/client/types/app/bsky/feed/searchPosts";
 import { filterAccountLabels } from "@atproto/api/dist/moderation/subjects/account";
+import { formatDistanceToNowStrict } from "date-fns";
+import { ja } from "date-fns/locale";
 
 type Author = {
   id: string;
@@ -73,7 +75,12 @@ export default function Bluesky({ posts }: BlueskyProps) {
               />
               <span className="text-sm font-bold">{post.author.name}</span>
               <span className="text-sm text-gray-600">
-                <a href={post.url}>{post.created_at}</a>
+                <a href={post.url}>
+                  {formatDistanceToNowStrict(new Date(post.created_at), {
+                    addSuffix: true,
+                    locale: ja,
+                  })}
+                </a>
               </span>
             </div>
             <div className="ml-6">{post.text}</div>
