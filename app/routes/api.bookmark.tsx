@@ -1,0 +1,93 @@
+import { data } from "react-router";
+import { z } from "zod";
+import type { Route } from "./+types/api.bookmark";
+
+const bookmarkComment = z.object({
+  user: z.string(),
+  tags: z.string().array(),
+  timestamp: z.string(),
+  comment: z.string(),
+});
+
+const bookmarkEntry = z.nullable(
+  z.object({
+    count: z.number(),
+    entry_url: z.string(),
+    bookmarks: z.array(bookmarkComment),
+  }),
+);
+
+type BookmarkEntry = NonNullable<z.infer<typeof bookmarkEntry>>;
+
+type GetBookmarkOptions = {
+  url: string;
+  signal?: AbortSignal;
+};
+
+export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<BookmarkEntry> {
+  const resp = await fetchBookmark({ url, signal });
+  if (resp.status === 500) {
+    throw new Error("TimeoutError");
+  }
+  if (!resp.ok) {
+    throw new Error("Oops! Something wrong with the bookmark fetch. Please try again later.");
+  }
+
+  const json = await resp.json();
+  const entry = bookmarkEntry.parse(json);
+  if (!entry) {
+    return defaultEntry(url);
+  }
+
+  // Remove bookmarks with no comment
+  entry.bookmarks = entry.bookmarks.filter((value) => value.comment !== "");
+
+  return entry;
+}
+
+function fetchBookmark({ url, signal }: GetBookmarkOptions): Promise<Response> {
+  // ref: https://developer.hatena.ne.jp/ja/documents/bookmark/apis/getinfo/
+  const api = new URL("https://b.hatena.ne.jp/entry/jsonlite/");
+  api.searchParams.set("url", url);
+
+  const headers = new Headers({
+    "User-Agent": "akuma (Awesome buKUMA viewer)",
+  });
+
+  return fetch(api, { headers, signal });
+}
+
+function defaultEntry(url: string): BookmarkEntry {
+  const encodedUrl = url.replaceAll(/#/g, "%23");
+  return {
+    count: 0,
+    entry_url: `https://b.hatena.ne.jp/entry/${encodedUrl}`,
+    bookmarks: [],
+  };
+}
+
+export async function loader({ request }: Route.LoaderArgs) {
+  const u = new URL(request.url);
+  const url = u.searchParams.get("url");
+
+  if (!url || !URL.canParse(url)) {
+    return data({ error: "Invalid URL" }, { status: 400 });
+  }
+
+  try {
+    const signal = AbortSignal.timeout(5000);
+    return await getBookmark({ url, signal });
+  } catch (err) {
+    // from AbortSignal
+    if (err instanceof DOMException && err.name === "TimeoutError") {
+      return data({ error: "Request timeout" }, { status: 504 });
+    }
+    // from getBookmark()
+    if (err instanceof Error && err.message === "TimeoutError") {
+      return data({ error: "Request timeout" }, { status: 504 });
+    }
+
+    console.log({ err });
+    return data({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
