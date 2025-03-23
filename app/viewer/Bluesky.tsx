@@ -1,61 +1,13 @@
-import { AtpAgent } from "@atproto/api";
-import type { Response as AtpResponse } from "@atproto/api/dist/client/types/app/bsky/feed/searchPosts";
-import { filterAccountLabels } from "@atproto/api/dist/moderation/subjects/account";
 import { formatDistanceToNowStrict } from "date-fns";
 import { ja } from "date-fns/locale";
+import { getBskyPost } from "~/routes/api.bsky";
 
-type Author = {
-  id: string;
-  name?: string;
-  icon?: string;
-};
-
-type Post = {
-  author: Author;
-  text: string;
-  created_at: string;
-  url: string;
-};
-
-function generateUrl(post: AtpResponse["data"]["posts"][number]): string {
-  const authorId = post.author.handle;
-  const postId = post.uri.slice(post.uri.lastIndexOf("/") + 1);
-
-  return `https://bsky.app/profile/${authorId}/post/${postId}`;
-}
-
-export async function fetchBlueskyPosts(url: string): Promise<Post[]> {
-  const agent = new AtpAgent({ service: "https://public.api.bsky.app" });
-
-  const response = await agent.app.bsky.feed.searchPosts({
-    q: url,
-    limit: 10,
-  });
-
-  const posts = response.data.posts
-    .filter((post) => {
-      return !filterAccountLabels(post.author.labels).some(
-        (label) => label.val === "!no-unauthenticated",
-      );
-    })
-    .map((post) => {
-      return {
-        author: {
-          id: post.author.handle,
-          name: post.author.displayName,
-          icon: post.author.avatar,
-        },
-        text: post.record.text as string,
-        created_at: post.record.createdAt as string,
-        url: generateUrl(post),
-      };
-    });
-
-  return posts;
+export async function fetchBlueskyPosts(url: string) {
+  return getBskyPost({ url });
 }
 
 type BlueskyProps = {
-  posts?: Post[];
+  posts?: Awaited<ReturnType<typeof fetchBlueskyPosts>>;
 };
 
 export default function Bluesky({ posts }: BlueskyProps) {
