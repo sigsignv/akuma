@@ -1,5 +1,6 @@
 import { formatDistanceToNowStrict } from "date-fns";
 import { ja } from "date-fns/locale";
+import Icon from "~/components/Icon";
 import type { getBookmark } from "~/routes/api.bookmark";
 
 type BookmarkProps = {
@@ -25,12 +26,9 @@ export default function Bookmark({ bookmark }: BookmarkProps) {
         {bookmark.bookmarks.map((value) => (
           <li key={value.user} className="space-y-2">
             <div className="flex items-center gap-1">
-              <img
+              <Icon
                 src={`https://cdn.profile-image.st-hatena.com/users/${value.user}/profile.png`}
                 alt={value.user}
-                decoding="async"
-                width={24}
-                height={24}
               />
               <span className="text-sm font-bold">{value.user}</span>
               <span className="text-sm text-gray-600">
