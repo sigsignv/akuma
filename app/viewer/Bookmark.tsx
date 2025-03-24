@@ -1,59 +1,9 @@
 import { formatDistanceToNowStrict } from "date-fns";
 import { ja } from "date-fns/locale";
-import { z } from "zod";
-
-const BookmarkComment = z.object({
-  user: z.string(),
-  tags: z.string().array(),
-  timestamp: z.string(),
-  comment: z.string(),
-});
-
-const BookmarkEntry = z.nullable(
-  z.object({
-    count: z.number(),
-    entry_url: z.string(),
-    bookmarks: z.array(BookmarkComment),
-  }),
-);
-
-type BookmarkEntry = NonNullable<z.infer<typeof BookmarkEntry>>;
-
-export async function fetchBookmark(url: string): Promise<BookmarkEntry> {
-  // ref: https://developer.hatena.ne.jp/ja/documents/bookmark/apis/getinfo/
-  const u = new URL("https://b.hatena.ne.jp/entry/json/");
-  u.searchParams.set("url", url);
-
-  const resp = await fetch(u, {
-    headers: {
-      "User-Agent": "akuma (Anonymous buKUMA viewer)",
-    },
-  });
-
-  if (!resp.ok) {
-    throw new Error("Failed to fetch bookmark");
-  }
-
-  const json = await resp.json();
-  const bookmark = BookmarkEntry.parse(json);
-
-  if (!bookmark) {
-    const encodedUrl = url.replaceAll(/#/g, "%23");
-    return {
-      count: 0,
-      entry_url: `https://b.hatena.ne.jp/entry/${encodedUrl}`,
-      bookmarks: [],
-    };
-  }
-
-  // Remove bookmarks with no comment
-  bookmark.bookmarks = bookmark.bookmarks.filter((value) => value.comment !== "");
-
-  return bookmark;
-}
+import type { getBookmark } from "~/routes/api.bookmark";
 
 type BookmarkProps = {
-  bookmark?: BookmarkEntry;
+  bookmark?: Awaited<ReturnType<typeof getBookmark>>;
 };
 
 export default function Bookmark({ bookmark }: BookmarkProps) {

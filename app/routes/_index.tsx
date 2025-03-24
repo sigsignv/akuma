@@ -1,8 +1,8 @@
 import { Form } from "react-router";
 import { fetchBlueskyPosts } from "~/viewer/Bluesky";
 import { Viewer } from "~/viewer/Viewer";
-import { fetchBookmark } from "../viewer/Bookmark";
 import type { Route } from "./+types/_index";
+import { getBookmark } from "./api.bookmark";
 
 export function meta() {
   return [
@@ -19,7 +19,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     return {};
   }
 
-  const bookmarkPromise = fetchBookmark(url);
+  const bookmarkPromise = getBookmark({ url });
   const postsPromise = fetchBlueskyPosts(url);
 
   // todo: Error handling
