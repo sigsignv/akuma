@@ -1,5 +1,6 @@
 import { formatDistanceToNowStrict } from "date-fns";
 import { ja } from "date-fns/locale";
+import ElapsedTime from "~/components/ElapsedTime";
 import Icon from "~/components/Icon";
 import { getBskyPost } from "~/routes/api.bsky";
 
@@ -23,10 +24,7 @@ export default function Bluesky({ posts }: BlueskyProps) {
               <span className="text-sm font-bold">{post.author.name}</span>
               <span className="text-sm text-gray-600">
                 <a href={post.url}>
-                  {formatDistanceToNowStrict(new Date(post.created_at), {
-                    addSuffix: true,
-                    locale: ja,
-                  })}
+                  <ElapsedTime date={post.created_at} locale="ja" />
                 </a>
               </span>
             </div>
