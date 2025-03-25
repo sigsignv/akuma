@@ -1,5 +1,3 @@
-import { formatDistanceToNowStrict } from "date-fns";
-import { ja } from "date-fns/locale";
 import ElapsedTime from "~/components/ElapsedTime";
 import Icon from "~/components/Icon";
 import { getBskyPost } from "~/routes/api.bsky";
