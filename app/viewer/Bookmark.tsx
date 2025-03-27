@@ -1,5 +1,4 @@
-import { formatDistanceToNowStrict } from "date-fns";
-import { ja } from "date-fns/locale";
+import Comment from "~/components/Comment";
 import type { getBookmark } from "~/routes/api.bookmark";
 
 type BookmarkProps = {
@@ -24,23 +23,16 @@ export default function Bookmark({ bookmark }: BookmarkProps) {
       <ul className="space-y-4">
         {bookmark.bookmarks.map((value) => (
           <li key={value.user} className="space-y-2">
-            <div className="flex items-center gap-1">
-              <img
-                src={`https://cdn.profile-image.st-hatena.com/users/${value.user}/profile.png`}
-                alt={value.user}
-                decoding="async"
-                width={24}
-                height={24}
-              />
-              <span className="text-sm font-bold">{value.user}</span>
-              <span className="text-sm text-gray-600">
-                {formatDistanceToNowStrict(new Date(`${value.timestamp}:00 +09:00`), {
-                  addSuffix: true,
-                  locale: ja,
-                })}
-              </span>
-            </div>
-            <div className="ml-6">{value.comment}</div>
+            <Comment
+              author={{
+                id: value.user,
+                icon: `https://cdn.profile-image.st-hatena.com/users/${value.user}/profile.png`,
+                link: `https://b.hatena.ne.jp/${value.user}/`,
+              }}
+              createdAt={value.timestamp}
+              content={value.comment}
+              link={bookmark.entry_url}
+            />
           </li>
         ))}
       </ul>

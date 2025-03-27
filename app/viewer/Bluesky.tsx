@@ -1,5 +1,4 @@
-import { formatDistanceToNowStrict } from "date-fns";
-import { ja } from "date-fns/locale";
+import Comment from "~/components/Comment";
 import { getBskyPost } from "~/routes/api.bsky";
 
 export async function fetchBlueskyPosts(url: string) {
@@ -17,25 +16,17 @@ export default function Bluesky({ posts }: BlueskyProps) {
       <ul className="space-y-4">
         {posts?.map((post) => (
           <li key={post.url} className="space-y-2">
-            <div className="flex items-center gap-1">
-              <img
-                src={post.author.icon}
-                alt={post.author.id}
-                decoding="async"
-                width={24}
-                height={24}
-              />
-              <span className="text-sm font-bold">{post.author.name}</span>
-              <span className="text-sm text-gray-600">
-                <a href={post.url}>
-                  {formatDistanceToNowStrict(new Date(post.created_at), {
-                    addSuffix: true,
-                    locale: ja,
-                  })}
-                </a>
-              </span>
-            </div>
-            <div className="ml-6">{post.text}</div>
+            <Comment
+              author={{
+                id: post.author.id,
+                name: post.author.name,
+                icon: post.author.icon ?? "",
+                link: `https://bsky.app/profile/${post.author.id}`,
+              }}
+              createdAt={post.created_at}
+              content={post.text}
+              link={post.url}
+            />
           </li>
         ))}
       </ul>

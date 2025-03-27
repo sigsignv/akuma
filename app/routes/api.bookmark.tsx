@@ -1,3 +1,4 @@
+import { parse } from "date-fns";
 import { data } from "react-router";
 import { z } from "zod";
 import type { Route } from "./+types/api.bookmark";
@@ -39,8 +40,12 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
     return defaultEntry(url);
   }
 
-  // Remove bookmarks with no comment
-  entry.bookmarks = entry.bookmarks.filter((value) => value.comment !== "");
+  entry.bookmarks = entry.bookmarks
+    .filter((bookmark) => bookmark.comment !== "")
+    .map((bookmark) => {
+      const timestamp = convertDate(bookmark.timestamp);
+      return { ...bookmark, timestamp };
+    });
 
   return entry;
 }
@@ -55,6 +60,11 @@ function fetchBookmark({ url, signal }: GetBookmarkOptions): Promise<Response> {
   });
 
   return fetch(api, { headers, signal });
+}
+
+function convertDate(timestamp: string): string {
+  const date = parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm XXX", new Date());
+  return date.toISOString();
 }
 
 function defaultEntry(url: string): BookmarkEntry {
