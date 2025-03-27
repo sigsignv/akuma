@@ -6,27 +6,17 @@ export async function fetchBlueskyPosts(url: string) {
 }
 
 type BlueskyProps = {
-  posts?: Awaited<ReturnType<typeof fetchBlueskyPosts>>;
+  result?: Awaited<ReturnType<typeof fetchBlueskyPosts>>;
 };
 
-export default function Bluesky({ posts }: BlueskyProps) {
+export default function Bluesky({ result }: BlueskyProps) {
   return (
     <div className="pt-4 pb-4">
       <h2 className="text-2xl font-bold">Bluesky</h2>
       <ul className="space-y-4">
-        {posts?.map((post) => (
-          <li key={post.url} className="space-y-2">
-            <Comment
-              author={{
-                id: post.author.id,
-                name: post.author.name,
-                icon: post.author.icon ?? "",
-                link: `https://bsky.app/profile/${post.author.id}`,
-              }}
-              createdAt={post.created_at}
-              content={post.text}
-              link={post.url}
-            />
+        {result?.comments.map((comment) => (
+          <li key={comment.link} className="space-y-2">
+            <Comment {...comment} />
           </li>
         ))}
       </ul>

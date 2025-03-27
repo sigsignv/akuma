@@ -62,7 +62,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           </div>
         </Form>
         <div className="py-4">
-          <Viewer bookmark={bookmark} posts={posts} />
+          <Viewer bookmark={bookmark} result={posts} />
         </div>
       </main>
 

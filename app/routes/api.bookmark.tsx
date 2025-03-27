@@ -1,7 +1,14 @@
 import { parse } from "date-fns";
 import { data } from "react-router";
 import { z } from "zod";
+import type { Comment } from "~/components/Comment";
 import type { Route } from "./+types/api.bookmark";
+
+type Bookmark = {
+  url: string;
+  total: number;
+  comments: Comment[];
+};
 
 const bookmarkComment = z.object({
   user: z.string(),
@@ -14,18 +21,17 @@ const bookmarkEntry = z.nullable(
   z.object({
     count: z.number(),
     entry_url: z.string(),
+    eid: z.string(),
     bookmarks: z.array(bookmarkComment),
   }),
 );
-
-type BookmarkEntry = NonNullable<z.infer<typeof bookmarkEntry>>;
 
 type GetBookmarkOptions = {
   url: string;
   signal?: AbortSignal;
 };
 
-export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<BookmarkEntry> {
+export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<Bookmark> {
   const resp = await fetchBookmark({ url, signal });
   if (resp.status === 500) {
     throw new Error("TimeoutError");
@@ -37,17 +43,34 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
   const json = await resp.json();
   const entry = bookmarkEntry.parse(json);
   if (!entry) {
-    return defaultEntry(url);
+    const encodedUrl = url.replaceAll(/#/g, "%23");
+    return {
+      url: `https://b.hatena.ne.jp/entry/${encodedUrl}`,
+      total: 0,
+      comments: [],
+    };
   }
 
-  entry.bookmarks = entry.bookmarks
+  const comments: Comment[] = entry.bookmarks
     .filter((bookmark) => bookmark.comment !== "")
     .map((bookmark) => {
-      const timestamp = convertDate(bookmark.timestamp);
-      return { ...bookmark, timestamp };
+      return {
+        author: {
+          id: bookmark.user,
+          icon: `https://cdn.profile-image.st-hatena.com/users/${bookmark.user}/profile.png`,
+          link: `https://b.hatena.ne.jp/${bookmark.user}/`,
+        },
+        content: bookmark.comment,
+        createdAt: convertDate(bookmark.timestamp),
+        link: `https://b.hatena.ne.jp/entry/${entry.eid}/comment/${bookmark.user}`,
+      };
     });
 
-  return entry;
+  return {
+    url: entry.entry_url,
+    total: entry.count,
+    comments,
+  };
 }
 
 function fetchBookmark({ url, signal }: GetBookmarkOptions): Promise<Response> {
@@ -65,15 +88,6 @@ function fetchBookmark({ url, signal }: GetBookmarkOptions): Promise<Response> {
 function convertDate(timestamp: string): string {
   const date = parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm XXX", new Date());
   return date.toISOString();
-}
-
-function defaultEntry(url: string): BookmarkEntry {
-  const encodedUrl = url.replaceAll(/#/g, "%23");
-  return {
-    count: 0,
-    entry_url: `https://b.hatena.ne.jp/entry/${encodedUrl}`,
-    bookmarks: [],
-  };
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
