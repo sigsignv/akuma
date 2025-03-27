@@ -1,5 +1,4 @@
-import ElapsedTime from "~/components/ElapsedTime";
-import Icon from "~/components/Icon";
+import Comment from "~/components/Comment";
 import { getBskyPost } from "~/routes/api.bsky";
 
 export async function fetchBlueskyPosts(url: string) {
@@ -17,16 +16,14 @@ export default function Bluesky({ posts }: BlueskyProps) {
       <ul className="space-y-4">
         {posts?.map((post) => (
           <li key={post.url} className="space-y-2">
-            <div className="flex items-center gap-1">
-              <Icon src={post.author.icon ?? ""} alt={post.author.id} />
-              <span className="text-sm font-bold">{post.author.name}</span>
-              <span className="text-sm text-gray-600">
-                <a href={post.url}>
-                  <ElapsedTime date={post.created_at} locale="ja" />
-                </a>
-              </span>
-            </div>
-            <div className="ml-6">{post.text}</div>
+            <Comment
+              userId={post.author.id}
+              name={post.author.name}
+              icon={post.author.icon ?? ""}
+              createdAt={post.created_at}
+              comment={post.text}
+              link={post.url}
+            />
           </li>
         ))}
       </ul>

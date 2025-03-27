@@ -1,5 +1,4 @@
-import ElapsedTime from "~/components/ElapsedTime";
-import Icon from "~/components/Icon";
+import Comment from "~/components/Comment";
 import type { getBookmark } from "~/routes/api.bookmark";
 
 type BookmarkProps = {
@@ -24,17 +23,12 @@ export default function Bookmark({ bookmark }: BookmarkProps) {
       <ul className="space-y-4">
         {bookmark.bookmarks.map((value) => (
           <li key={value.user} className="space-y-2">
-            <div className="flex items-center gap-1">
-              <Icon
-                src={`https://cdn.profile-image.st-hatena.com/users/${value.user}/profile.png`}
-                alt={value.user}
-              />
-              <span className="text-sm font-bold">{value.user}</span>
-              <span className="text-sm text-gray-600">
-                <ElapsedTime date={value.timestamp} locale="ja" />
-              </span>
-            </div>
-            <div className="ml-6">{value.comment}</div>
+            <Comment
+              userId={value.user}
+              icon={`https://cdn.profile-image.st-hatena.com/users/${value.user}/profile.png`}
+              createdAt={value.timestamp}
+              comment={value.comment}
+            />
           </li>
         ))}
       </ul>
