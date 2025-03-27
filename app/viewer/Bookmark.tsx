@@ -31,7 +31,7 @@ export default function Bookmark({ bookmark }: BookmarkProps) {
               />
               <span className="text-sm font-bold">{value.user}</span>
               <span className="text-sm text-gray-600">
-                <ElapsedTime date={`${value.timestamp}:00 +09:00`} locale="ja" />
+                <ElapsedTime date={value.timestamp} locale="ja" />
               </span>
             </div>
             <div className="ml-6">{value.comment}</div>
