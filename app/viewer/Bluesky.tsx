@@ -17,11 +17,14 @@ export default function Bluesky({ posts }: BlueskyProps) {
         {posts?.map((post) => (
           <li key={post.url} className="space-y-2">
             <Comment
-              userId={post.author.id}
-              name={post.author.name}
-              icon={post.author.icon ?? ""}
+              author={{
+                id: post.author.id,
+                name: post.author.name,
+                icon: post.author.icon ?? "",
+                link: `https://bsky.app/profile/${post.author.id}`,
+              }}
               createdAt={post.created_at}
-              comment={post.text}
+              content={post.text}
               link={post.url}
             />
           </li>

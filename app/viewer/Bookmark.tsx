@@ -24,10 +24,14 @@ export default function Bookmark({ bookmark }: BookmarkProps) {
         {bookmark.bookmarks.map((value) => (
           <li key={value.user} className="space-y-2">
             <Comment
-              userId={value.user}
-              icon={`https://cdn.profile-image.st-hatena.com/users/${value.user}/profile.png`}
+              author={{
+                id: value.user,
+                icon: `https://cdn.profile-image.st-hatena.com/users/${value.user}/profile.png`,
+                link: `https://b.hatena.ne.jp/${value.user}/`,
+              }}
               createdAt={value.timestamp}
-              comment={value.comment}
+              content={value.comment}
+              link={bookmark.entry_url}
             />
           </li>
         ))}
