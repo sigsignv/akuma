@@ -1,6 +1,6 @@
+import List from "~/components/List";
 import LocationBar from "~/components/LocationBar";
 import Bluesky from "~/viewer/Bluesky";
-import Bookmark from "~/viewer/Bookmark";
 import type { Route } from "./+types/_index";
 import { getBookmark } from "./api.bookmark";
 import { getBskyPost } from "./api.bsky";
@@ -36,6 +36,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Index({ loaderData }: Route.ComponentProps) {
   const { url, bookmark, posts } = loaderData;
 
+  const bookmarkCounts = {
+    total: bookmark?.total ?? 0,
+    comments: bookmark?.comments.length ?? 0,
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-gray-800 text-white p-4">
@@ -49,7 +54,14 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         <div className="py-4">
           {url ? (
             <>
-              <Bookmark bookmark={bookmark} />
+              <div className="pt-4 pb-4">
+                <h2 className="text-2xl font-bold">
+                  <a href={bookmark.url}>
+                    はてなブックマーク ({bookmarkCounts.comments}/{bookmarkCounts.total})
+                  </a>
+                </h2>
+                {bookmark && <List {...bookmark} />}
+              </div>
               <Bluesky result={posts} />
             </>
           ) : (
