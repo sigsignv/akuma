@@ -36,7 +36,7 @@ export async function getBskyPost({ url, signal }: GetBskyPostOptions): Promise<
       author: {
         id: post.author.handle,
         name: post.author.displayName,
-        icon: post.author.avatar ?? "",
+        icon: post.author.avatar,
         link: `https://bsky.app/profile/${post.author.handle}`,
       },
       content: text,
