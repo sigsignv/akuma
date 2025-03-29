@@ -4,7 +4,7 @@ import Icon from "~/components/Icon";
 export type User = {
   id: string;
   name?: string;
-  icon: string;
+  icon?: string;
   link: string;
 };
 
