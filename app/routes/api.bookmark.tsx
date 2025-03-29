@@ -1,13 +1,12 @@
 import { parse } from "date-fns";
 import { data } from "react-router";
 import { z } from "zod";
-import type { Comment } from "~/components/Comment";
+import type { Comments, ListProps } from "~/components/List";
 import type { Route } from "./+types/api.bookmark";
 
-type Bookmark = {
+type Bookmark = ListProps & {
   url: string;
   total: number;
-  comments: Comment[];
 };
 
 const bookmarkComment = z.object({
@@ -51,7 +50,7 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
     };
   }
 
-  const comments: Comment[] = entry.bookmarks
+  const comments: Comments = entry.bookmarks
     .filter((bookmark) => bookmark.comment !== "")
     .map((bookmark) => {
       return {

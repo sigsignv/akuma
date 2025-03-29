@@ -2,12 +2,10 @@ import { AtpAgent } from "@atproto/api";
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import { filterAccountLabels } from "@atproto/api/dist/moderation/subjects/account";
 import { data } from "react-router";
-import type { Comment } from "~/components/Comment";
+import type { Comments, ListProps } from "~/components/List";
 import type { Route } from "./+types/api.bsky";
 
-type BskySearchResult = {
-  comments: Comment[];
-};
+type BskySearchResult = ListProps & {};
 
 type GetBskyPostOptions = {
   url: string;
@@ -20,7 +18,7 @@ export async function getBskyPost({ url, signal }: GetBskyPostOptions): Promise<
     throw new Error("Oops! Something wrong with the Bluesky search fetch. Please try again later.");
   }
 
-  const posts: Comment[] = [];
+  const posts: Comments = [];
   for (const post of resp.data.posts) {
     if (!isPublicPost(post)) {
       continue;

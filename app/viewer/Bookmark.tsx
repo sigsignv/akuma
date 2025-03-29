@@ -1,4 +1,4 @@
-import Comment from "~/components/Comment";
+import List from "~/components/List";
 import type { getBookmark } from "~/routes/api.bookmark";
 
 type BookmarkProps = {
@@ -20,13 +20,7 @@ export default function Bookmark({ bookmark }: BookmarkProps) {
           はてなブックマーク ({commentedBookmarkCount}/{allBookmarkCount})
         </a>
       </h2>
-      <ul className="space-y-4">
-        {bookmark.comments.map((comment) => (
-          <li key={comment.link} className="space-y-2">
-            <Comment {...comment} />
-          </li>
-        ))}
-      </ul>
+      {bookmark && <List {...bookmark} />}
     </div>
   );
 }
