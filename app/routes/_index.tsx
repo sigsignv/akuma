@@ -1,8 +1,9 @@
 import LocationBar from "~/components/LocationBar";
-import { fetchBlueskyPosts } from "~/viewer/Bluesky";
-import { Viewer } from "~/viewer/Viewer";
+import Bluesky from "~/viewer/Bluesky";
+import Bookmark from "~/viewer/Bookmark";
 import type { Route } from "./+types/_index";
 import { getBookmark } from "./api.bookmark";
+import { getBskyPost } from "./api.bsky";
 
 export function meta() {
   return [
@@ -20,7 +21,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   const bookmarkPromise = getBookmark({ url });
-  const postsPromise = fetchBlueskyPosts(url);
+  const postsPromise = getBskyPost({ url });
 
   // todo: Error handling
   const [bookmark, posts] = await Promise.all([bookmarkPromise, postsPromise]);
@@ -46,7 +47,8 @@ export default function Index({ loaderData }: Route.ComponentProps) {
       <main className="flex-grow container mx-auto p-4">
         <LocationBar url={url} />
         <div className="py-4">
-          <Viewer bookmark={bookmark} result={posts} />
+          <Bookmark bookmark={bookmark} />
+          <Bluesky result={posts} />
         </div>
       </main>
 
