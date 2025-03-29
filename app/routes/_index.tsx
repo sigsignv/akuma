@@ -47,8 +47,14 @@ export default function Index({ loaderData }: Route.ComponentProps) {
       <main className="flex-grow container mx-auto p-4">
         <LocationBar url={url} />
         <div className="py-4">
-          <Bookmark bookmark={bookmark} />
-          <Bluesky result={posts} />
+          {url ? (
+            <>
+              <Bookmark bookmark={bookmark} />
+              <Bluesky result={posts} />
+            </>
+          ) : (
+            <p>Welcome to akuma</p>
+          )}
         </div>
       </main>
 
