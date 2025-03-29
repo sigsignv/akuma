@@ -1,5 +1,6 @@
 import List from "~/components/List";
 import LocationBar from "~/components/LocationBar";
+import { isValidUrl } from "~/utils";
 import type { Route } from "./+types/_index";
 import { getBookmark } from "./api.bookmark";
 import { getBskyPost } from "./api.bsky";
@@ -15,7 +16,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const u = new URL(request.url);
   const url = u.searchParams.get("url");
 
-  if (!url) {
+  if (!isValidUrl(url)) {
     return {};
   }
 

@@ -2,6 +2,7 @@ import { parse } from "date-fns";
 import { data } from "react-router";
 import { z } from "zod";
 import type { Comments, ListProps } from "~/components/List";
+import { isValidUrl } from "~/utils";
 import type { Route } from "./+types/api.bookmark";
 
 type Bookmark = ListProps & {
@@ -93,7 +94,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const u = new URL(request.url);
   const url = u.searchParams.get("url");
 
-  if (!url || !URL.canParse(url)) {
+  if (!isValidUrl(url)) {
     return data({ error: "Invalid URL" }, { status: 400 });
   }
 
