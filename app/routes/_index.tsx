@@ -1,6 +1,5 @@
 import List from "~/components/List";
 import LocationBar from "~/components/LocationBar";
-import Bluesky from "~/viewer/Bluesky";
 import type { Route } from "./+types/_index";
 import { getBookmark } from "./api.bookmark";
 import { getBskyPost } from "./api.bsky";
@@ -62,7 +61,10 @@ export default function Index({ loaderData }: Route.ComponentProps) {
                 </h2>
                 {bookmark && <List {...bookmark} />}
               </div>
-              <Bluesky result={posts} />
+              <div className="pt-4 pb-4">
+                <h2 className="text-2xl font-bold">Bluesky</h2>
+                {posts && <List {...posts} />}
+              </div>
             </>
           ) : (
             <p>Welcome to akuma</p>
