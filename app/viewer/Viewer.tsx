@@ -3,14 +3,14 @@ import Bookmark from "./Bookmark";
 
 type ViewerProps = {
   bookmark?: React.ComponentProps<typeof Bookmark>["bookmark"];
-  posts?: React.ComponentProps<typeof Bluesky>["posts"];
+  result?: React.ComponentProps<typeof Bluesky>["result"];
 };
 
-export function Viewer({ bookmark, posts }: ViewerProps) {
+export function Viewer({ bookmark, result }: ViewerProps) {
   return (
     <>
       <Bookmark bookmark={bookmark} />
-      <Bluesky posts={posts} />
+      <Bluesky result={result} />
     </>
   );
 }
