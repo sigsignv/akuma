@@ -1,12 +1,8 @@
 import Comment from "~/components/Comment";
-import { getBskyPost } from "~/routes/api.bsky";
-
-export async function fetchBlueskyPosts(url: string) {
-  return getBskyPost({ url });
-}
+import type { getBskyPost } from "~/routes/api.bsky";
 
 type BlueskyProps = {
-  result?: Awaited<ReturnType<typeof fetchBlueskyPosts>>;
+  result?: Awaited<ReturnType<typeof getBskyPost>>;
 };
 
 export default function Bluesky({ result }: BlueskyProps) {
