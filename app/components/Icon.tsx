@@ -8,12 +8,5 @@ export default function Icon({ src, alt }: IconProps) {
     return <div className="w-6 h-6 rounded-full bg-gray-100" />;
   }
 
-  return (
-    <img
-      className="w-6 h-6 rounded-full object-contain bg-gray-100"
-      src={src}
-      alt={alt}
-      decoding="async"
-    />
-  );
+  return <img className="w-6 h-6 rounded-full object-cover" src={src} alt={alt} decoding="async" />;
 }
