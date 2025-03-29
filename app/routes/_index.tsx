@@ -1,9 +1,8 @@
-import { Form } from "react-router";
+import List from "~/components/List";
 import LocationBar from "~/components/LocationBar";
-import { fetchBlueskyPosts } from "~/viewer/Bluesky";
-import { Viewer } from "~/viewer/Viewer";
 import type { Route } from "./+types/_index";
 import { getBookmark } from "./api.bookmark";
+import { getBskyPost } from "./api.bsky";
 
 export function meta() {
   return [
@@ -21,7 +20,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   }
 
   const bookmarkPromise = getBookmark({ url });
-  const postsPromise = fetchBlueskyPosts(url);
+  const postsPromise = getBskyPost({ url });
 
   // todo: Error handling
   const [bookmark, posts] = await Promise.all([bookmarkPromise, postsPromise]);
@@ -36,6 +35,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 export default function Index({ loaderData }: Route.ComponentProps) {
   const { url, bookmark, posts } = loaderData;
 
+  const bookmarkCounts = {
+    total: bookmark?.total ?? 0,
+    comments: bookmark?.comments.length ?? 0,
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-gray-800 text-white p-4">
@@ -47,7 +51,24 @@ export default function Index({ loaderData }: Route.ComponentProps) {
       <main className="flex-grow container mx-auto p-4">
         <LocationBar url={url} />
         <div className="py-4">
-          <Viewer bookmark={bookmark} result={posts} />
+          {url ? (
+            <>
+              <div className="pt-4 pb-4">
+                <h2 className="text-2xl font-bold">
+                  <a href={bookmark.url}>
+                    はてなブックマーク ({bookmarkCounts.comments}/{bookmarkCounts.total})
+                  </a>
+                </h2>
+                {bookmark && <List {...bookmark} />}
+              </div>
+              <div className="pt-4 pb-4">
+                <h2 className="text-2xl font-bold">Bluesky</h2>
+                {posts && <List {...posts} />}
+              </div>
+            </>
+          ) : (
+            <p>Welcome to akuma</p>
+          )}
         </div>
       </main>
 

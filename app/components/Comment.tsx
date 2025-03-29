@@ -8,14 +8,14 @@ export type User = {
   link: string;
 };
 
-export type Comment = {
+export type CommentProps = {
   author: User;
   content: string;
   createdAt: string;
   link: string;
 };
 
-export default function Comment({ author, content, createdAt, link }: Comment) {
+export default function Comment({ author, content, createdAt, link }: CommentProps) {
   return (
     <div className="flex gap-2">
       <div className="flex-shrink-0">
