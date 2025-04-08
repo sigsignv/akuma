@@ -1,5 +1,6 @@
 import List from "~/components/List";
 import LocationBar from "~/components/LocationBar";
+import Welcome from "~/components/Welcome";
 import { isValidUrl } from "~/utils";
 import type { Route } from "./+types/_index";
 import { getBookmark } from "./api.bookmark";
@@ -35,6 +36,10 @@ export async function loader({ request }: Route.LoaderArgs) {
 
 export default function Index({ loaderData }: Route.ComponentProps) {
   const { url, bookmark, posts } = loaderData;
+
+  if (!url) {
+    return <Welcome />;
+  }
 
   const bookmarkCounts = {
     total: bookmark?.total ?? 0,
