@@ -6,6 +6,17 @@ import type { Route } from "./+types/_index";
 import { getBookmark } from "./api.bookmark";
 import { getBskyPost } from "./api.bsky";
 
+type InitialView = {
+  kind: "welcome";
+};
+
+type ContentView = {
+  kind: "content";
+  url: string;
+  bookmark: Awaited<ReturnType<typeof getBookmark>>;
+  posts: Awaited<ReturnType<typeof getBskyPost>>;
+};
+
 export function meta() {
   return [
     { title: "New React Router App" },
@@ -13,12 +24,12 @@ export function meta() {
   ];
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
+export async function loader({ request }: Route.LoaderArgs): Promise<InitialView | ContentView> {
   const u = new URL(request.url);
   const url = u.searchParams.get("url");
 
   if (!isValidUrl(url)) {
-    return {};
+    return { kind: "welcome" };
   }
 
   const bookmarkPromise = getBookmark({ url });
@@ -28,6 +39,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const [bookmark, posts] = await Promise.all([bookmarkPromise, postsPromise]);
 
   return {
+    kind: "content",
     url,
     bookmark,
     posts,
@@ -35,11 +47,11 @@ export async function loader({ request }: Route.LoaderArgs) {
 }
 
 export default function Index({ loaderData }: Route.ComponentProps) {
-  const { url, bookmark, posts } = loaderData;
-
-  if (!url) {
+  if (loaderData.kind === "welcome") {
     return <Welcome />;
   }
+
+  const { url, bookmark, posts } = loaderData;
 
   const bookmarkCounts = {
     total: bookmark?.total ?? 0,
@@ -57,24 +69,18 @@ export default function Index({ loaderData }: Route.ComponentProps) {
       <main className="flex-grow container mx-auto p-4">
         <LocationBar url={url} />
         <div className="py-4">
-          {url ? (
-            <>
-              <div className="pt-4 pb-4">
-                <h2 className="text-2xl font-bold">
-                  <a href={bookmark.url}>
-                    はてなブックマーク ({bookmarkCounts.comments}/{bookmarkCounts.total})
-                  </a>
-                </h2>
-                {bookmark && <List {...bookmark} />}
-              </div>
-              <div className="pt-4 pb-4">
-                <h2 className="text-2xl font-bold">Bluesky</h2>
-                {posts && <List {...posts} />}
-              </div>
-            </>
-          ) : (
-            <p>Welcome to akuma</p>
-          )}
+          <div className="pt-4 pb-4">
+            <h2 className="text-2xl font-bold">
+              <a href={bookmark.url}>
+                はてなブックマーク ({bookmarkCounts.comments}/{bookmarkCounts.total})
+              </a>
+            </h2>
+            <List {...bookmark} />
+          </div>
+          <div className="pt-4 pb-4">
+            <h2 className="text-2xl font-bold">Bluesky</h2>
+            <List {...posts} />
+          </div>
         </div>
       </main>
 
