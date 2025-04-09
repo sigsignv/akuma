@@ -11,7 +11,10 @@ const bookmarkEntry = v.nullable(
     count: v.pipe(v.number(), v.integer(), v.minValue(0)),
     entry_url: v.pipe(v.string(), v.url()),
     eid: v.pipe(v.string(), v.decimal()),
-    bookmarks: v.array(bookmarkComment),
+    bookmarks: v.pipe(
+      v.array(bookmarkComment),
+      v.transform((arr) => arr.filter((bookmark) => bookmark.comment !== "")),
+    ),
   }),
 );
 

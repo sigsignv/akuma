@@ -31,20 +31,18 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
     };
   }
 
-  const comments: Comments = entry.bookmarks
-    .filter((bookmark) => bookmark.comment !== "")
-    .map((bookmark) => {
-      return {
-        author: {
-          id: bookmark.user,
-          icon: `https://cdn.profile-image.st-hatena.com/users/${bookmark.user}/profile.png`,
-          link: `https://b.hatena.ne.jp/${bookmark.user}/`,
-        },
-        content: bookmark.comment,
-        createdAt: convertDate(bookmark.timestamp),
-        link: `https://b.hatena.ne.jp/entry/${entry.eid}/comment/${bookmark.user}`,
-      };
-    });
+  const comments: Comments = entry.bookmarks.map((bookmark) => {
+    return {
+      author: {
+        id: bookmark.user,
+        icon: `https://cdn.profile-image.st-hatena.com/users/${bookmark.user}/profile.png`,
+        link: `https://b.hatena.ne.jp/${bookmark.user}/`,
+      },
+      content: bookmark.comment,
+      createdAt: convertDate(bookmark.timestamp),
+      link: `https://b.hatena.ne.jp/entry/${entry.eid}/comment/${bookmark.user}`,
+    };
+  });
 
   return {
     url: entry.entry_url,
