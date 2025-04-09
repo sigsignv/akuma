@@ -34,9 +34,6 @@ type GetBookmarkOptions = {
 
 export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<Bookmark> {
   const resp = await fetchBookmark({ url, signal });
-  if (resp.status === 500) {
-    throw new Error("TimeoutError");
-  }
   if (!resp.ok) {
     throw new Error("Oops! Something wrong with the bookmark fetch. Please try again later.");
   }
