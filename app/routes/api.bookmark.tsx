@@ -1,6 +1,7 @@
 import { parse } from "date-fns";
 import { data } from "react-router";
 import { z } from "zod";
+import { fetchBookmark } from "~/api/bookmark";
 import type { Comments, ListProps } from "~/components/List";
 import { isValidUrl } from "~/utils";
 import type { Route } from "./+types/api.bookmark";
@@ -71,18 +72,6 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
     total: entry.count,
     comments,
   };
-}
-
-function fetchBookmark({ url, signal }: GetBookmarkOptions): Promise<Response> {
-  // ref: https://developer.hatena.ne.jp/ja/documents/bookmark/apis/getinfo/
-  const api = new URL("https://b.hatena.ne.jp/entry/jsonlite/");
-  api.searchParams.set("url", url);
-
-  const headers = new Headers({
-    "User-Agent": "akuma (Awesome buKUMA viewer)",
-  });
-
-  return fetch(api, { headers, signal });
 }
 
 function convertDate(timestamp: string): string {
