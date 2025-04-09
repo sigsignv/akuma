@@ -1,3 +1,20 @@
+import * as v from "valibot";
+
+const bookmarkComment = v.object({
+  user: v.string(),
+  timestamp: v.string(),
+  comment: v.string(),
+});
+
+const bookmarkEntry = v.nullable(
+  v.object({
+    count: v.pipe(v.number(), v.integer(), v.minValue(0)),
+    entry_url: v.pipe(v.string(), v.url()),
+    eid: v.pipe(v.string(), v.decimal()),
+    bookmarks: v.array(bookmarkComment),
+  }),
+);
+
 type GetBookmarkOptions = {
   url: string;
   signal?: AbortSignal;
@@ -20,6 +37,23 @@ export async function fetchBookmark({ url, signal }: GetBookmarkOptions): Promis
   }
 
   return resp;
+}
+
+export async function parseBookmark(response: Response) {
+  try {
+    const json = await response.json();
+    return v.parse(bookmarkEntry, json);
+  } catch (ex) {
+    if (ex instanceof SyntaxError) {
+      console.log({ kind: "JSON.parse", error: ex });
+      throw new Error("Invalid JSON response");
+    }
+    if (ex instanceof v.ValiError) {
+      console.log({ kind: "valibot", error: ex });
+      throw new Error("Invalid JSON response");
+    }
+    throw new Error("Unknown error");
+  }
 }
 
 /**

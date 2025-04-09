@@ -1,7 +1,6 @@
 import { parse } from "date-fns";
 import { data } from "react-router";
-import { z } from "zod";
-import { fetchBookmark } from "~/api/bookmark";
+import { fetchBookmark, parseBookmark } from "~/api/bookmark";
 import type { Comments, ListProps } from "~/components/List";
 import { isValidUrl } from "~/utils";
 import type { Route } from "./+types/api.bookmark";
@@ -10,22 +9,6 @@ type Bookmark = ListProps & {
   url: string;
   total: number;
 };
-
-const bookmarkComment = z.object({
-  user: z.string(),
-  tags: z.string().array(),
-  timestamp: z.string(),
-  comment: z.string(),
-});
-
-const bookmarkEntry = z.nullable(
-  z.object({
-    count: z.number(),
-    entry_url: z.string(),
-    eid: z.string(),
-    bookmarks: z.array(bookmarkComment),
-  }),
-);
 
 type GetBookmarkOptions = {
   url: string;
@@ -38,8 +21,7 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
     throw new Error("Oops! Something wrong with the bookmark fetch. Please try again later.");
   }
 
-  const json = await resp.json();
-  const entry = bookmarkEntry.parse(json);
+  const entry = await parseBookmark(resp);
   if (!entry) {
     const encodedUrl = url.replaceAll(/#/g, "%23");
     return {
