@@ -1,4 +1,3 @@
-import { parse } from "date-fns";
 import { data } from "react-router";
 import { fetchBookmark, parseBookmark } from "~/api/bookmark";
 import type { Comments, ListProps } from "~/components/List";
@@ -39,7 +38,7 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
         link: `https://b.hatena.ne.jp/${bookmark.user}/`,
       },
       content: bookmark.comment,
-      createdAt: convertDate(bookmark.timestamp),
+      createdAt: bookmark.timestamp,
       link: `https://b.hatena.ne.jp/entry/${entry.eid}/comment/${bookmark.user}`,
     };
   });
@@ -49,11 +48,6 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
     total: entry.count,
     comments,
   };
-}
-
-function convertDate(timestamp: string): string {
-  const date = parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm XXX", new Date());
-  return date.toISOString();
 }
 
 export async function loader({ request }: Route.LoaderArgs) {

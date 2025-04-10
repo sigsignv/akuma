@@ -1,3 +1,4 @@
+import { parse } from "date-fns";
 import * as v from "valibot";
 
 const bookmarkComment = v.object({
@@ -45,7 +46,19 @@ export async function fetchBookmark({ url, signal }: GetBookmarkOptions): Promis
 export async function parseBookmark(response: Response) {
   try {
     const json = await response.json();
-    return v.parse(bookmarkEntry, json);
+    const entry = v.parse(bookmarkEntry, json);
+
+    // Convert timestamp to canonical date format
+    if (entry) {
+      entry.bookmarks = entry.bookmarks.map((bookmark) => {
+        return {
+          ...bookmark,
+          timestamp: convertToCanonicalDate(bookmark.timestamp),
+        };
+      });
+    }
+
+    return entry;
   } catch (ex) {
     if (ex instanceof SyntaxError) {
       console.log({ kind: "JSON.parse", error: ex });
@@ -57,6 +70,10 @@ export async function parseBookmark(response: Response) {
     }
     throw new Error("Unknown error");
   }
+}
+
+function convertToCanonicalDate(timestamp: string): string {
+  return parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm xxx", new Date()).toISOString();
 }
 
 /**
