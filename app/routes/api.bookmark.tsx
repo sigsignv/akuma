@@ -15,6 +15,7 @@ type GetBookmarkOptions = {
 };
 
 export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<Bookmark> {
+  const beginTime = Date.now();
   const resp = await fetchBookmark({ url, signal });
   if (!resp.ok) {
     throw new Error("Oops! Something wrong with the bookmark fetch. Please try again later.");
@@ -42,6 +43,8 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
       link: `https://b.hatena.ne.jp/entry/${entry.eid}/comment/${bookmark.user}`,
     };
   });
+
+  console.log({ kind: "ResponseTime", service: "bookmark", timeMs: Date.now() - beginTime });
 
   return {
     url: entry.entry_url,
