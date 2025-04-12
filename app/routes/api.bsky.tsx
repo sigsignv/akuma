@@ -14,7 +14,9 @@ type GetBskyPostOptions = {
 };
 
 export async function getBskyPost({ url, signal }: GetBskyPostOptions): Promise<BskySearchResult> {
+  const beginTime = Date.now();
   const resp = await fetchBskyPost({ url, signal });
+
   if (!resp.success) {
     throw new Error("Oops! Something wrong with the Bluesky search fetch. Please try again later.");
   }
@@ -45,6 +47,8 @@ export async function getBskyPost({ url, signal }: GetBskyPostOptions): Promise<
       link: convertUrl(post),
     });
   }
+
+  console.log({ kind: "ResponseTime", service: "bsky", timeMs: Date.now() - beginTime });
 
   return {
     comments: posts.slice(0, 10),
