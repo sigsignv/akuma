@@ -1,3 +1,5 @@
+import React from "react";
+import { Await } from "react-router";
 import List from "~/components/List";
 import LocationBar from "~/components/LocationBar";
 import Welcome from "~/components/Welcome";
@@ -13,8 +15,8 @@ type InitialView = {
 type ContentView = {
   kind: "content";
   url: string;
-  bookmark: Awaited<ReturnType<typeof getBookmark>>;
-  posts: Awaited<ReturnType<typeof getBskyPost>>;
+  bookmark: ReturnType<typeof getBookmark>;
+  posts: ReturnType<typeof getBskyPost>;
 };
 
 export function meta() {
@@ -32,17 +34,11 @@ export async function loader({ request }: Route.LoaderArgs): Promise<InitialView
     return { kind: "welcome" };
   }
 
-  const bookmarkPromise = getBookmark({ url });
-  const postsPromise = getBskyPost({ url });
-
-  // todo: Error handling
-  const [bookmark, posts] = await Promise.all([bookmarkPromise, postsPromise]);
-
   return {
     kind: "content",
     url,
-    bookmark,
-    posts,
+    bookmark: getBookmark({ url }),
+    posts: getBskyPost({ url }),
   };
 }
 
@@ -52,11 +48,6 @@ export default function Index({ loaderData }: Route.ComponentProps) {
   }
 
   const { url, bookmark, posts } = loaderData;
-
-  const bookmarkCounts = {
-    total: bookmark?.total ?? 0,
-    comments: bookmark?.comments.length ?? 0,
-  };
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -71,15 +62,21 @@ export default function Index({ loaderData }: Route.ComponentProps) {
         <div className="py-4">
           <div className="pt-4 pb-4">
             <h2 className="text-2xl font-bold">
-              <a href={bookmark.url}>
-                はてなブックマーク ({bookmarkCounts.comments}/{bookmarkCounts.total})
-              </a>
+              <React.Suspense fallback="はてなブックマーク">
+                <Await resolve={bookmark}>
+                  {(b) => (
+                    <a href={url}>
+                      はてなブックマーク ({b.comments.length}/{b.total})
+                    </a>
+                  )}
+                </Await>
+              </React.Suspense>
             </h2>
-            <List {...bookmark} />
+            <List promise={bookmark} />
           </div>
           <div className="pt-4 pb-4">
             <h2 className="text-2xl font-bold">Bluesky</h2>
-            <List {...posts} />
+            <List promise={posts} />
           </div>
         </div>
       </main>
