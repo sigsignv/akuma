@@ -21,7 +21,7 @@ export default function List(props: ListPropsWithPromise) {
       {"comments" in props && <ListView {...props} />}
       {"promise" in props && (
         <React.Suspense fallback={<li>Loading...</li>}>
-          <Await resolve={props.promise}>
+          <Await resolve={props.promise} errorElement={<li>Error</li>}>
             {({ comments }) => <ListView comments={comments} />}
           </Await>
         </React.Suspense>
