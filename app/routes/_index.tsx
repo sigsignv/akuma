@@ -65,7 +65,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
               <React.Suspense fallback="はてなブックマーク">
                 <Await resolve={bookmark}>
                   {(b) => (
-                    <a href={url}>
+                    <a href={b.url}>
                       はてなブックマーク ({b.comments.length}/{b.total})
                     </a>
                   )}
