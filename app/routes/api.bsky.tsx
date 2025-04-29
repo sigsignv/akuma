@@ -56,7 +56,7 @@ export async function getBskyPost({ url, signal }: GetBskyPostOptions): Promise<
 }
 
 function fetchBskyPost({ url, signal }: GetBskyPostOptions) {
-  const agent = new AtpAgent({ service: "https://public.api.bsky.app" });
+  const agent = new AtpAgent({ service: "https://api.bsky.app" });
   return agent.app.bsky.feed.searchPosts(
     {
       q: url,
