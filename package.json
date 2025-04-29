@@ -10,7 +10,7 @@
     "typecheck": "react-router typegen && tsc -b"
   },
   "dependencies": {
-    "@atproto/api": "^0.14.9",
+    "@atproto/api": "^0.15.5",
     "@react-router/fs-routes": "^7.5.3",
     "@react-router/node": "^7.5.3",
     "@react-router/serve": "^7.5.3",
