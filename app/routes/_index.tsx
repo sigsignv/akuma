@@ -1,5 +1,6 @@
 import React from "react";
 import { Await } from "react-router";
+import { getStories } from "~/api/hackernews";
 import List from "~/components/List";
 import LocationBar from "~/components/LocationBar";
 import Welcome from "~/components/Welcome";
@@ -17,6 +18,7 @@ type ContentView = {
   url: string;
   bookmark: ReturnType<typeof getBookmark>;
   posts: ReturnType<typeof getBskyPost>;
+  news: ReturnType<typeof getStories>;
 };
 
 export function meta() {
@@ -39,6 +41,7 @@ export async function loader({ request }: Route.LoaderArgs): Promise<InitialView
     url,
     bookmark: getBookmark({ url }),
     posts: getBskyPost({ url }),
+    news: getStories({ query: url }),
   };
 }
 
@@ -47,7 +50,7 @@ export default function Index({ loaderData }: Route.ComponentProps) {
     return <Welcome />;
   }
 
-  const { url, bookmark, posts } = loaderData;
+  const { url, bookmark, posts, news } = loaderData;
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -77,6 +80,27 @@ export default function Index({ loaderData }: Route.ComponentProps) {
           <div className="pt-4 pb-4">
             <h2 className="text-2xl font-bold">Bluesky</h2>
             <List promise={posts} />
+          </div>
+          <div className="pt-4 pb-4">
+            <h2 className="text-2xl font-bold">Hacker News</h2>
+            <React.Suspense fallback="Loading...">
+              <Await resolve={news} errorElement={<p>Error</p>}>
+                {(news) => (
+                  <ul className="space-y-4">
+                    {news.map((story) =>
+                      story.kind === "story" ? (
+                        <li key={story.url} className="space-y-2">
+                          <a href={story.url} className="text-blue-500 hover:underline">
+                            {story.title}
+                          </a>
+                          ({story.points} pt | {story.comments} comments)
+                        </li>
+                      ) : null,
+                    )}
+                  </ul>
+                )}
+              </Await>
+            </React.Suspense>
           </div>
         </div>
       </main>
