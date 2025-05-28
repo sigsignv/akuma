@@ -27,12 +27,12 @@ export function meta() {
   ];
 }
 
-export async function loader({ request }: Route.LoaderArgs): Promise<InitialView | ContentView> {
+export async function loader({ request }: Route.LoaderArgs) {
   const u = new URL(request.url);
   const url = u.searchParams.get("url");
 
   if (!isValidUrl(url)) {
-    return { kind: "welcome" };
+    throw redirect("/");
   }
 
   return {
@@ -45,10 +45,6 @@ export async function loader({ request }: Route.LoaderArgs): Promise<InitialView
 }
 
 export default function Reactions({ loaderData }: Route.ComponentProps) {
-  if (loaderData.kind === "welcome") {
-    return redirect("/");
-  }
-
   const { url, bookmark, posts, news } = loaderData;
 
   return (
