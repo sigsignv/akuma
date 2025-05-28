@@ -4,7 +4,7 @@ import { getStories } from "~/api/hackernews";
 import List from "~/components/List";
 import LocationBar from "~/components/LocationBar";
 import { isValidUrl } from "~/utils";
-import type { Route } from "./+types/_index";
+import type { Route } from "./+types/reactions";
 import { getBookmark } from "./api.bookmark";
 import { getBskyPost } from "./api.bsky";
 
