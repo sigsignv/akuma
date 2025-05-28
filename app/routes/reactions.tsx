@@ -8,18 +8,6 @@ import type { Route } from "./+types/reactions";
 import { getBookmark } from "./api.bookmark";
 import { getBskyPost } from "./api.bsky";
 
-type InitialView = {
-  kind: "welcome";
-};
-
-type ContentView = {
-  kind: "content";
-  url: string;
-  bookmark: ReturnType<typeof getBookmark>;
-  posts: ReturnType<typeof getBskyPost>;
-  news: ReturnType<typeof getStories>;
-};
-
 export function meta() {
   return [
     { title: "New React Router App" },
