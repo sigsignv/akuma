@@ -2,8 +2,8 @@ import Welcome from "~/components/Welcome";
 
 export function meta() {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Akuma" },
+    { name: "description", content: "See what people say about any web page" },
   ];
 }
 
