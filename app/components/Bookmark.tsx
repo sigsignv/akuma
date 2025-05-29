@@ -12,20 +12,22 @@ type BookmarkProps = {
 
 export default function Bookmark({ promise }: BookmarkProps) {
   return (
-    <div id="bookmark" className="pt-4 pb-4">
-      <h2 className="text-2xl font-bold">
+    <details id="bookmark" className="pt-4 pb-4" open={true}>
+      <summary className="text-2xl font-bold cursor-pointer select-none">
         <React.Suspense fallback="はてなブックマーク">
           <Await resolve={promise}>
             <BookmarkTitle />
           </Await>
         </React.Suspense>
-      </h2>
-      <React.Suspense fallback={<li>Loading...</li>}>
-        <Await resolve={promise} errorElement={<li>Error</li>}>
-          <BookmarkComments />
-        </Await>
-      </React.Suspense>
-    </div>
+      </summary>
+      <div>
+        <React.Suspense fallback={<li>Loading...</li>}>
+          <Await resolve={promise} errorElement={<li>Error</li>}>
+            <BookmarkComments />
+          </Await>
+        </React.Suspense>
+      </div>
+    </details>
   );
 }
 
