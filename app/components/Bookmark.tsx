@@ -8,9 +8,10 @@ type Bookmarks = Awaited<ReturnType<typeof getBookmark>>;
 
 type BookmarkProps = {
   promise: Promise<Bookmarks>;
+  url: string;
 };
 
-export default function Bookmark({ promise }: BookmarkProps) {
+export default function Bookmark({ promise, url }: BookmarkProps) {
   return (
     <details id="bookmark" className="pt-4 pb-4" open={true}>
       <summary className="text-2xl font-bold cursor-pointer select-none">
@@ -27,6 +28,19 @@ export default function Bookmark({ promise }: BookmarkProps) {
           </Await>
         </React.Suspense>
       </div>
+      <div className="flex justify-center pt-4">
+        <React.Suspense fallback={<BookmarkLink link={generateLink(url)} />}>
+          <Await resolve={promise} errorElement={<BookmarkLink link={generateLink(url)} />}>
+            {(bookmark) =>
+              bookmark?.entry_url ? (
+                <BookmarkLink link={bookmark.entry_url} />
+              ) : (
+                <BookmarkLink link={generateLink(url)} />
+              )
+            }
+          </Await>
+        </React.Suspense>
+      </div>
     </details>
   );
 }
@@ -38,9 +52,9 @@ function BookmarkTitle() {
   const total = b.count;
 
   return (
-    <a href={b.entry_url}>
-      はてなブックマーク ({comments}/{total})
-    </a>
+    <span>
+      はてなブックマーク ({comments} / {total})
+    </span>
   );
 }
 
@@ -85,4 +99,19 @@ function BookmarkComments() {
       ))}
     </ul>
   );
+}
+
+function BookmarkLink({ link }: { link: string }) {
+  return (
+    <a href={link} target="_blank" rel="noreferrer">
+      <span className="text-sm text-gray-600 dark:text-gray-400 hover:underline">
+        はてなブックマークを見る
+      </span>
+    </a>
+  );
+}
+
+function generateLink(url: string): string {
+  const escapedUrl = url.replaceAll(/#/g, "%23");
+  return `https://b.hatena.ne.jp/entry/${escapedUrl}`;
 }
