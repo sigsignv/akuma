@@ -1,6 +1,7 @@
 import React from "react";
 import { Await, redirect } from "react-router";
 import { getStories } from "~/api/hackernews";
+import Bookmark from "~/components/Bookmark";
 import List from "~/components/List";
 import LocationBar from "~/components/LocationBar";
 import { isValidUrl } from "~/utils";
@@ -46,20 +47,7 @@ export default function Reactions({ loaderData }: Route.ComponentProps) {
       <main className="flex-grow container mx-auto p-4">
         <LocationBar url={url} />
         <div className="py-4">
-          <div className="pt-4 pb-4">
-            <h2 className="text-2xl font-bold">
-              <React.Suspense fallback="はてなブックマーク">
-                <Await resolve={bookmark}>
-                  {(b) => (
-                    <a href={b.url}>
-                      はてなブックマーク ({b.comments.length}/{b.total})
-                    </a>
-                  )}
-                </Await>
-              </React.Suspense>
-            </h2>
-            <List promise={bookmark} />
-          </div>
+          <Bookmark promise={bookmark} />
           <div className="pt-4 pb-4">
             <h2 className="text-2xl font-bold">Bluesky</h2>
             <List promise={posts} />
