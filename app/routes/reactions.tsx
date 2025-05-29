@@ -44,7 +44,7 @@ export default function Reactions({ loaderData }: Route.ComponentProps) {
         </div>
       </header>
 
-      <main className="flex-grow container mx-auto p-4">
+      <main className="flex-grow container mx-auto max-w-xl p-4">
         <LocationBar url={url} />
         <div className="py-4">
           <Bookmark promise={bookmark} />
