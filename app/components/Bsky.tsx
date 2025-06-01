@@ -8,13 +8,17 @@ import Section from "./Section";
 
 type BlueskyProps = {
   promise: ReturnType<typeof getBskyPost>;
+  url: string;
 };
 
-export default function Bsky({ promise }: BlueskyProps) {
+export default function Bsky({ promise, url }: BlueskyProps) {
   const [title, setTitle] = useState("Bluesky");
 
+  const link = new URL("https://bsky.app/search");
+  link.searchParams.set("q", url);
+
   return (
-    <Section title={title} link="https://bsky.app" linkText="bsky.app を見る" promise={promise}>
+    <Section title={title} link={link.toString()} linkText="bsky.app を見る" promise={promise}>
       <BskyView setTitle={setTitle} />
     </Section>
   );
