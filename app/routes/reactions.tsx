@@ -2,7 +2,7 @@ import React from "react";
 import { Await, redirect } from "react-router";
 import { getStories } from "~/api/hackernews";
 import Bookmark from "~/components/Bookmark";
-import List from "~/components/List";
+import Bsky from "~/components/Bsky";
 import LocationBar from "~/components/LocationBar";
 import { isValidUrl } from "~/utils";
 import type { Route } from "./+types/reactions";
@@ -48,10 +48,7 @@ export default function Reactions({ loaderData }: Route.ComponentProps) {
         <LocationBar url={url} />
         <div className="py-4">
           <Bookmark promise={bookmark} url={url} />
-          <div className="pt-4 pb-4">
-            <h2 className="text-2xl font-bold">Bluesky</h2>
-            <List promise={posts} />
-          </div>
+          <Bsky promise={posts} />
           <div className="pt-4 pb-4">
             <h2 className="text-2xl font-bold">Hacker News</h2>
             <React.Suspense fallback="Loading...">
