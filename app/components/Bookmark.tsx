@@ -3,6 +3,7 @@ import { Await, useAsyncError, useAsyncValue } from "react-router";
 import type { getBookmark } from "~/routes/api.bookmark";
 import ElapsedTime from "./ElapsedTime";
 import Icon from "./Icon";
+import Section from "./Section";
 
 type Bookmarks = Awaited<ReturnType<typeof getBookmark>>;
 
@@ -37,19 +38,13 @@ type ViewProps = BaseProps & {
 
 function BookmarkView({ title, link, children, fallbackUrl }: ViewProps) {
   return (
-    <details className="pt-4 pb-4" open={true}>
-      <summary className="text-2xl font-bold cursor-pointer select-none">
-        {title ? title : "はてなブックマーク"}
-      </summary>
-      <div>{children}</div>
-      <div className="flex justify-center pt-4">
-        <a href={link ? link : fallbackUrl} target="_blank" rel="noreferrer">
-          <span className="text-sm text-gray-600 dark:text-gray-400 hover:underline">
-            はてなブックマークを見る
-          </span>
-        </a>
-      </div>
-    </details>
+    <Section
+      title={title ? title : "はてなブックマーク"}
+      link={link ? link : fallbackUrl}
+      linkText="はてなブックマークを見る"
+    >
+      {children}
+    </Section>
   );
 }
 

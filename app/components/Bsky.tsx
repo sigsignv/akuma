@@ -3,6 +3,7 @@ import { Await } from "react-router";
 import ElapsedTime from "~/components/ElapsedTime";
 import Icon from "~/components/Icon";
 import type { getBskyPost } from "../routes/api.bsky";
+import Section from "./Section";
 
 type BlueskyProps = {
   promise: ReturnType<typeof getBskyPost>;
@@ -10,8 +11,7 @@ type BlueskyProps = {
 
 export default function Bsky({ promise }: BlueskyProps) {
   return (
-    <details className="pt-4 pb-4" open={true}>
-      <summary className="text-2xl font-bold cursor-pointer select-none">Bluesky</summary>
+    <Section title="Bluesky" link="https://bsky.app" linkText="bsky.app を見る">
       <div className="flex justify-center items-center">
         <React.Suspense fallback={<li>Loading...</li>}>
           <Await resolve={promise} errorElement={<li>Error</li>}>
@@ -46,6 +46,6 @@ export default function Bsky({ promise }: BlueskyProps) {
           </Await>
         </React.Suspense>
       </div>
-    </details>
+    </Section>
   );
 }
