@@ -37,7 +37,7 @@ type ViewProps = BaseProps & {
 
 function BookmarkView({ title, link, children, fallbackUrl }: ViewProps) {
   return (
-    <details id="bookmark" className="pt-4 pb-4" open={true}>
+    <details className="pt-4 pb-4" open={true}>
       <summary className="text-2xl font-bold cursor-pointer select-none">
         {title ? title : "はてなブックマーク"}
       </summary>

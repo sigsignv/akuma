@@ -47,8 +47,12 @@ export default function Reactions({ loaderData }: Route.ComponentProps) {
       <main className="flex-grow container mx-auto max-w-xl p-4">
         <LocationBar url={url} />
         <div className="py-4">
-          <Bookmark promise={bookmark} url={url} />
-          <Bsky promise={posts} />
+          <div id="bookmark">
+            <Bookmark promise={bookmark} url={url} />
+          </div>
+          <div id="bsky">
+            <Bsky promise={posts} />
+          </div>
           <div className="pt-4 pb-4">
             <h2 className="text-2xl font-bold">Hacker News</h2>
             <React.Suspense fallback="Loading...">
