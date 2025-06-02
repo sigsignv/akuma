@@ -11,7 +11,7 @@ export function loader({ request }: Route.LoaderArgs) {
   }
 
   if (text) {
-    const regexp = /\s+(?<url>https?:\/\/[^\s]+)$/u;
+    const regexp = /(?:^|\s+)(?<url>https?:\/\/[^\s]+)$/u;
     const url = text.match(regexp)?.groups?.url;
     console.log({ kind: "share", text, url });
     if (url && URL.canParse(url)) {
