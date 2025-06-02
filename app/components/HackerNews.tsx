@@ -1,5 +1,6 @@
 import { useAsyncValue } from "react-router";
 import type { NewsItem } from "~/api/hackernews";
+import ElapsedTime from "./ElapsedTime";
 import Section from "./Section";
 
 type HackerNewsProps = {
@@ -41,10 +42,19 @@ function HackerNewsView() {
       {news.map((story) =>
         story.kind === "story" ? (
           <li key={story.url} className="space-y-2">
-            <a href={story.url} className="text-blue-500 hover:underline">
-              {story.title}
-            </a>
-            ({story.points} pt | {story.comments} comments)
+            <div>
+              <a href={story.url} className="text-blue-500 hover:underline">
+                {story.title}
+              </a>
+              <br />
+              <span className="text-gray-500 text-sm ml-4">
+                <span>{story.points} pt</span>
+                <span> | </span>
+                <span>{story.comments} comments</span>
+                <span> | </span>
+                <ElapsedTime date={story.created_at.toUTCString()} locale="ja" />
+              </span>
+            </div>
           </li>
         ) : null,
       )}
