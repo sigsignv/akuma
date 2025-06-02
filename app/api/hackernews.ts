@@ -1,4 +1,4 @@
-import { type HackerNewsSearchResult, type HackerNewsStory, hnSearch } from "@sigsign/hn-search";
+import { type HackerNewsSearchResult, hnSearch } from "@sigsign/hn-search";
 
 export type NewsItem =
   | {
@@ -7,7 +7,7 @@ export type NewsItem =
       url: string;
       points: number;
       comments: number;
-      updated_at: Date;
+      created_at: Date;
     }
   | { kind: "unknown" };
 
@@ -45,7 +45,7 @@ export async function getStories({ query }: GetStoriesOptions): Promise<NewsItem
       url: `https://news.ycombinator.com/item?id=${item.id}`,
       points: item.points,
       comments: item.num_comments,
-      updated_at: item.updated_at,
+      created_at: item.created_at,
     };
   });
 }

@@ -1,6 +1,13 @@
-import LocationBar from "./LocationBar";
+import LocationBar from "~/components/LocationBar";
 
-export default function Welcome() {
+export function meta() {
+  return [
+    { title: "Akuma" },
+    { name: "description", content: "See what people say about any web page" },
+  ];
+}
+
+export default function Index() {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow container mx-auto flex flex-col items-center justify-center p-4 -mt-16">

@@ -1,13 +1,9 @@
 import { data } from "react-router";
-import { fetchBookmark, parseBookmark } from "~/api/bookmark";
-import type { Comments, ListProps } from "~/components/List";
+import { type Bookmarks, fetchBookmark, parseBookmark } from "~/api/bookmark";
 import { isValidUrl } from "~/utils";
 import type { Route } from "./+types/api.bookmark";
 
-type Bookmark = ListProps & {
-  url: string;
-  total: number;
-};
+type Bookmark = NonNullable<Bookmarks>;
 
 type GetBookmarkOptions = {
   url: string;
@@ -25,32 +21,16 @@ export async function getBookmark({ url, signal }: GetBookmarkOptions): Promise<
   if (!entry) {
     const encodedUrl = url.replaceAll(/#/g, "%23");
     return {
-      url: `https://b.hatena.ne.jp/entry/${encodedUrl}`,
-      total: 0,
-      comments: [],
+      entry_url: `https://b.hatena.ne.jp/entry/${encodedUrl}`,
+      count: 0,
+      bookmarks: [],
+      eid: "0",
     };
   }
 
-  const comments: Comments = entry.bookmarks.map((bookmark) => {
-    return {
-      author: {
-        id: bookmark.user,
-        icon: `https://cdn.profile-image.st-hatena.com/users/${bookmark.user}/profile.png`,
-        link: `https://b.hatena.ne.jp/${bookmark.user}/`,
-      },
-      content: bookmark.comment,
-      createdAt: bookmark.timestamp,
-      link: `https://b.hatena.ne.jp/entry/${entry.eid}/comment/${bookmark.user}`,
-    };
-  });
-
   console.log({ kind: "ResponseTime", service: "bookmark", timeMs: Date.now() - beginTime });
 
-  return {
-    url: entry.entry_url,
-    total: entry.count,
-    comments,
-  };
+  return entry;
 }
 
 export async function loader({ request }: Route.LoaderArgs) {

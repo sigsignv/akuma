@@ -19,6 +19,8 @@ const bookmarkEntry = v.nullable(
   }),
 );
 
+export type Bookmarks = v.InferOutput<typeof bookmarkEntry>;
+
 type GetBookmarkOptions = {
   url: string;
   signal?: AbortSignal;
