@@ -1,8 +1,8 @@
-import React from "react";
-import { Await, redirect } from "react-router";
+import { redirect } from "react-router";
 import { getStories } from "~/api/hackernews";
 import Bookmark from "~/components/Bookmark";
 import Bsky from "~/components/Bsky";
+import HackerNews from "~/components/HackerNews";
 import LocationBar from "~/components/LocationBar";
 import { isValidUrl } from "~/utils";
 import type { Route } from "./+types/reactions";
@@ -53,26 +53,8 @@ export default function Reactions({ loaderData }: Route.ComponentProps) {
           <div id="bsky">
             <Bsky promise={posts} url={url} />
           </div>
-          <div className="pt-4 pb-4">
-            <h2 className="text-2xl font-bold">Hacker News</h2>
-            <React.Suspense fallback="Loading...">
-              <Await resolve={news} errorElement={<p>Error</p>}>
-                {(news) => (
-                  <ul className="space-y-4">
-                    {news.map((story) =>
-                      story.kind === "story" ? (
-                        <li key={story.url} className="space-y-2">
-                          <a href={story.url} className="text-blue-500 hover:underline">
-                            {story.title}
-                          </a>
-                          ({story.points} pt | {story.comments} comments)
-                        </li>
-                      ) : null,
-                    )}
-                  </ul>
-                )}
-              </Await>
-            </React.Suspense>
+          <div id="hackernews">
+            <HackerNews promise={news} url={url} />
           </div>
         </div>
       </main>
