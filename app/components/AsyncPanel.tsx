@@ -28,6 +28,7 @@ function AsyncPanelSkeleton(props: Omit<PanelProps, "children">) {
 
 function AsyncPanelError(props: Omit<PanelProps, "children">) {
   const error = useAsyncError() as Error;
+  console.log({ error });
 
   return (
     <Panel {...props}>

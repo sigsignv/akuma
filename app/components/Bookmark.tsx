@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { useAsyncValue } from "react-router";
-import type { getBookmark } from "~/routes/api.bookmark";
+import type { BookmarkEntry } from "~/api/bookmark";
 import AsyncPanel from "./AsyncPanel";
 import ElapsedTime from "./ElapsedTime";
 import Icon from "./Icon";
 import Notice from "./Notice";
 
-type Bookmarks = Awaited<ReturnType<typeof getBookmark>>;
-
 type BookmarkProps = {
-  promise: Promise<Bookmarks>;
+  promise: Promise<BookmarkEntry>;
   url: string;
 };
 
@@ -34,7 +32,7 @@ type ViewProps = {
 };
 
 function BookmarkView({ setTitle, setLink }: ViewProps) {
-  const b = useAsyncValue() as Bookmarks | null;
+  const b = useAsyncValue() as BookmarkEntry;
 
   const comments = b?.bookmarks.length ?? 0;
   const total = b?.count ?? 0;
