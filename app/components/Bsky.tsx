@@ -13,7 +13,7 @@ type BlueskyProps = {
 };
 
 export default function Bsky({ promise, url }: BlueskyProps) {
-  const [title, setTitle] = useState("Bluesky");
+  const [title, setTitle] = useState("");
 
   const link = new URL("https://bsky.app/search");
   link.searchParams.set("q", url);
@@ -21,6 +21,7 @@ export default function Bsky({ promise, url }: BlueskyProps) {
   return (
     <AsyncPanel
       title={title}
+      defaultTitle="Bluesky"
       link={{ url: link.toString(), text: "bsky.app を見る" }}
       promise={promise}
     >

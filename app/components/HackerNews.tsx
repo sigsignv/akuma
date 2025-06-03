@@ -17,7 +17,7 @@ export default function HackerNews({ promise, url }: HackerNewsProps) {
 
   return (
     <AsyncPanel
-      title="Hacker News"
+      defaultTitle="Hacker News"
       link={{ url: link.toString(), text: "Hacker News を見る" }}
       promise={promise}
     >

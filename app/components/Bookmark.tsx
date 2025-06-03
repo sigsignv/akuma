@@ -12,12 +12,13 @@ type BookmarkProps = {
 };
 
 export default function Bookmark({ promise, url }: BookmarkProps) {
-  const [title, setTitle] = useState("はてなブックマーク");
+  const [title, setTitle] = useState("");
   const [link, setLink] = useState(generateFallbackUrl(url));
 
   return (
     <AsyncPanel
       title={title}
+      defaultTitle="はてなブックマーク"
       link={{ url: link, text: "はてなブックマークを見る" }}
       promise={promise}
     >

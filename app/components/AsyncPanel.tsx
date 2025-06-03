@@ -18,7 +18,7 @@ export default function AsyncPanel<T>({ children, promise, ...props }: AsyncProp
   );
 }
 
-function AsyncPanelSkeleton(props: Omit<PanelProps, "children">) {
+function AsyncPanelSkeleton({ title, ...props }: Omit<PanelProps, "children">) {
   return (
     <Panel {...props}>
       <Notice>Loading...</Notice>
@@ -26,7 +26,7 @@ function AsyncPanelSkeleton(props: Omit<PanelProps, "children">) {
   );
 }
 
-function AsyncPanelError(props: Omit<PanelProps, "children">) {
+function AsyncPanelError({ title, ...props }: Omit<PanelProps, "children">) {
   const error = useAsyncError() as Error;
   console.log({ error });
 
