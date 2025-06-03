@@ -1,6 +1,7 @@
 import { useAsyncValue } from "react-router";
 import type { NewsItem } from "~/api/hackernews";
 import ElapsedTime from "./ElapsedTime";
+import Notice from "./Notice";
 import Section from "./Section";
 
 type HackerNewsProps = {
@@ -30,11 +31,7 @@ function HackerNewsView() {
   const news = useAsyncValue() as NewsItem[];
 
   if (news.length === 0) {
-    return (
-      <div className="flex justify-center items-center">
-        <p className="m-4">記事はありません</p>
-      </div>
-    );
+    return <Notice>記事はありません</Notice>;
   }
 
   return (

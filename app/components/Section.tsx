@@ -1,5 +1,6 @@
 import React from "react";
 import { Await, useAsyncError } from "react-router";
+import Notice from "./Notice";
 import Panel from "./Panel";
 
 type SectionBaseProps = {
@@ -35,9 +36,7 @@ function SectionBase({ title, link, linkText, children }: SectionBaseProps) {
 function SectionMessage({ children, ...props }: SectionBaseProps) {
   return (
     <SectionBase {...props}>
-      <div className="flex justify-center items-center">
-        <p className="m-4">{children}</p>
-      </div>
+      <Notice>{children}</Notice>
     </SectionBase>
   );
 }

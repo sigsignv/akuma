@@ -4,6 +4,7 @@ import ElapsedTime from "~/components/ElapsedTime";
 import Icon from "~/components/Icon";
 import type { getBskyPost } from "../routes/api.bsky";
 import type { Comments } from "./List";
+import Notice from "./Notice";
 import Section from "./Section";
 
 type BlueskyProps = {
@@ -34,11 +35,7 @@ function BskyView({ setTitle }: ViewProps) {
   setTitle(`Bluesky (${comments.length})`);
 
   if (comments.length === 0) {
-    return (
-      <div className="flex justify-center items-center">
-        <p className="m-4">ポストはありません</p>
-      </div>
-    );
+    return <Notice>ポストはありません</Notice>;
   }
 
   return (

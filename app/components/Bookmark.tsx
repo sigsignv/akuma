@@ -3,6 +3,7 @@ import { useAsyncValue } from "react-router";
 import type { getBookmark } from "~/routes/api.bookmark";
 import ElapsedTime from "./ElapsedTime";
 import Icon from "./Icon";
+import Notice from "./Notice";
 import Section from "./Section";
 
 type Bookmarks = Awaited<ReturnType<typeof getBookmark>>;
@@ -40,11 +41,7 @@ function BookmarkView({ setTitle, setLink }: ViewProps) {
   }
 
   if (!b || comments === 0) {
-    return (
-      <div className="flex justify-center items-center">
-        <p className="m-4">コメントはありません</p>
-      </div>
-    );
+    return <Notice>コメントはありません</Notice>;
   }
 
   return (
