@@ -1,5 +1,6 @@
 import React from "react";
 import { Await, useAsyncError } from "react-router";
+import Panel from "./Panel";
 
 type SectionBaseProps = {
   title: string;
@@ -25,17 +26,9 @@ export default function Section<T>({ children, promise, ...props }: SectionProps
 
 function SectionBase({ title, link, linkText, children }: SectionBaseProps) {
   return (
-    <details className="pt-4 pb-4" open={true}>
-      <summary className="text-2xl font-bold cursor-pointer select-none">{title}</summary>
-      <div>{children}</div>
-      <div className="flex justify-center pt-4">
-        <a href={link} target="_blank" rel="noreferrer">
-          <span className="text-sm text-gray-600 dark:text-gray-400 hover:underline">
-            {linkText}
-          </span>
-        </a>
-      </div>
-    </details>
+    <Panel title={title} link={{ url: link, text: linkText }}>
+      {children}
+    </Panel>
   );
 }
 
