@@ -1,4 +1,4 @@
-import { parse } from "date-fns";
+import { formatISO, parse } from "date-fns";
 import * as v from "valibot";
 import type { SearchOptions } from "./types";
 
@@ -96,5 +96,5 @@ async function parseBookmarkData(response: Response): Promise<BookmarkEntry> {
 }
 
 function convertToCanonicalDate(timestamp: string): string {
-  return parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm xxx", new Date()).toISOString();
+  return formatISO(parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm xxx", new Date()));
 }
