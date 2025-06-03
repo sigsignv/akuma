@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useAsyncValue } from "react-router";
 import type { getBookmark } from "~/routes/api.bookmark";
+import AsyncPanel from "./AsyncPanel";
 import ElapsedTime from "./ElapsedTime";
 import Icon from "./Icon";
 import Notice from "./Notice";
-import Section from "./Section";
 
 type Bookmarks = Awaited<ReturnType<typeof getBookmark>>;
 
@@ -18,9 +18,13 @@ export default function Bookmark({ promise, url }: BookmarkProps) {
   const [link, setLink] = useState(generateFallbackUrl(url));
 
   return (
-    <Section title={title} link={link} linkText="はてなブックマークを見る" promise={promise}>
+    <AsyncPanel
+      title={title}
+      link={{ url: link, text: "はてなブックマークを見る" }}
+      promise={promise}
+    >
       <BookmarkView setTitle={setTitle} setLink={setLink} />
-    </Section>
+    </AsyncPanel>
   );
 }
 

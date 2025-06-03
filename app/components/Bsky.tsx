@@ -3,9 +3,9 @@ import { useAsyncValue } from "react-router";
 import ElapsedTime from "~/components/ElapsedTime";
 import Icon from "~/components/Icon";
 import type { getBskyPost } from "../routes/api.bsky";
+import AsyncPanel from "./AsyncPanel";
 import type { Comments } from "./List";
 import Notice from "./Notice";
-import Section from "./Section";
 
 type BlueskyProps = {
   promise: ReturnType<typeof getBskyPost>;
@@ -19,9 +19,13 @@ export default function Bsky({ promise, url }: BlueskyProps) {
   link.searchParams.set("q", url);
 
   return (
-    <Section title={title} link={link.toString()} linkText="bsky.app を見る" promise={promise}>
+    <AsyncPanel
+      title={title}
+      link={{ url: link.toString(), text: "bsky.app を見る" }}
+      promise={promise}
+    >
       <BskyView setTitle={setTitle} />
-    </Section>
+    </AsyncPanel>
   );
 }
 
