@@ -1,7 +1,5 @@
-import React from "react";
-import { Await, useAsyncError } from "react-router";
-import Notice from "./Notice";
-import Panel from "./Panel";
+import type React from "react";
+import AsyncPanel from "./AsyncPanel";
 
 type SectionBaseProps = {
   title: string;
@@ -15,38 +13,6 @@ export type SectionProps<T> = SectionBaseProps & {
   promise: Promise<T>;
 };
 
-export default function Section<T>({ children, promise, ...props }: SectionProps<T>) {
-  return (
-    <React.Suspense fallback={<SectionSkeleton {...props} />}>
-      <Await resolve={promise} errorElement={<SectionError {...props} />}>
-        <SectionBase {...props}>{children}</SectionBase>
-      </Await>
-    </React.Suspense>
-  );
-}
-
-function SectionBase({ title, link, linkText, children }: SectionBaseProps) {
-  return (
-    <Panel title={title} link={{ url: link, text: linkText }}>
-      {children}
-    </Panel>
-  );
-}
-
-function SectionMessage({ children, ...props }: SectionBaseProps) {
-  return (
-    <SectionBase {...props}>
-      <Notice>{children}</Notice>
-    </SectionBase>
-  );
-}
-
-function SectionSkeleton(props: Omit<SectionBaseProps, "children">) {
-  return <SectionMessage {...props}>Loading...</SectionMessage>;
-}
-
-function SectionError(props: Omit<SectionBaseProps, "children">) {
-  const error = useAsyncError() as Error;
-
-  return <SectionMessage {...props}>{error.message}</SectionMessage>;
+export default function Section<T>({ link, linkText, ...props }: SectionProps<T>) {
+  return <AsyncPanel link={{ url: link, text: linkText }} {...props} />;
 }
