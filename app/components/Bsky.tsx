@@ -1,14 +1,13 @@
 import { useState } from "react";
 import { useAsyncValue } from "react-router";
+import type { PostData, getPost } from "~/api/bsky";
 import ElapsedTime from "~/components/ElapsedTime";
 import Icon from "~/components/Icon";
-import type { getBskyPost } from "../routes/api.bsky";
 import AsyncPanel from "./AsyncPanel";
-import type { Comments } from "./List";
 import Notice from "./Notice";
 
 type BlueskyProps = {
-  promise: ReturnType<typeof getBskyPost>;
+  promise: ReturnType<typeof getPost>;
   url: string;
 };
 
@@ -35,7 +34,7 @@ type ViewProps = {
 };
 
 function BskyView({ setTitle }: ViewProps) {
-  const { comments } = useAsyncValue() as { comments: Comments };
+  const { comments } = useAsyncValue() as PostData;
 
   setTitle(`Bluesky (${comments.length})`);
 
