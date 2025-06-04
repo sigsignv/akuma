@@ -12,7 +12,7 @@ export default function Panel({ title, defaultTitle, link, children }: PanelProp
   return (
     <details className="pt-4 pb-4" open={true}>
       <summary className="text-2xl font-bold cursor-pointer select-none">
-        {title ?? defaultTitle}
+        {title || defaultTitle}
       </summary>
       <div>{children}</div>
       <div className="flex justify-center pt-4">
