@@ -1,5 +1,6 @@
-import { parse } from "date-fns";
+import { formatISO, parse } from "date-fns";
 import * as v from "valibot";
+import type { SearchOptions } from "./types";
 
 const bookmarkComment = v.object({
   user: v.string(),
@@ -12,76 +13,88 @@ const bookmarkEntry = v.nullable(
     count: v.pipe(v.number(), v.integer(), v.minValue(0)),
     entry_url: v.pipe(v.string(), v.url()),
     eid: v.pipe(v.string(), v.decimal()),
-    bookmarks: v.pipe(
-      v.array(bookmarkComment),
-      v.transform((arr) => arr.filter((bookmark) => bookmark.comment !== "")),
-    ),
+    bookmarks: v.array(bookmarkComment),
   }),
 );
 
-export type Bookmarks = v.InferOutput<typeof bookmarkEntry>;
+export type BookmarkEntry = v.InferOutput<typeof bookmarkEntry>;
 
-type GetBookmarkOptions = {
-  url: string;
-  signal?: AbortSignal;
-};
+class BookmarkError extends Error {
+  constructor(
+    message: string,
+    public cause?: Error,
+  ) {
+    super(message);
+    this.name = "BookmarkError";
+  }
+}
 
-export async function fetchBookmark({ url, signal }: GetBookmarkOptions): Promise<Response> {
-  // ref: https://developer.hatena.ne.jp/ja/documents/bookmark/apis/getinfo/
-  const api = new URL("https://b.hatena.ne.jp/entry/jsonlite/");
-  api.searchParams.set("url", url);
+export async function getBookmark(options: SearchOptions): Promise<BookmarkEntry> {
+  let response: Response;
+
+  try {
+    response = await fetchBookmarkData(options);
+  } catch (ex) {
+    if (ex instanceof DOMException && ex.name === "TimeoutError") {
+      throw new BookmarkError("リクエストがタイムアウトしました", ex);
+    }
+    throw ex;
+  }
+
+  if (!response.ok) {
+    throw new BookmarkError("ブックマークの取得に失敗しました");
+  }
+
+  try {
+    return parseBookmarkData(response);
+  } catch (ex) {
+    if (ex instanceof SyntaxError) {
+      throw new BookmarkError("JSON の解析に失敗しました", ex);
+    }
+    throw ex;
+  }
+}
+
+async function fetchBookmarkData({
+  url,
+  signal,
+  client = fetch,
+}: SearchOptions): Promise<Response> {
+  const endpoint = new URL("https://b.hatena.ne.jp/entry/jsonlite/");
+  endpoint.searchParams.set("url", url);
 
   const headers = new Headers({
-    "User-Agent": "akuma (Awesome buKUMA viewer)",
+    "User-Agent": "akuma",
   });
 
   const beginTime = Date.now();
-  const resp = await fetch(api, { headers, signal });
+  const response = await client(endpoint, { headers, signal });
+  console.log({ kind: "ResponseTime", service: "bookmark", timeMs: Date.now() - beginTime });
 
-  if (resp.status === 500 && isProbablyTimeout(beginTime)) {
-    throw new Error("TimeoutError");
-  }
-
-  return resp;
+  return response;
 }
 
-export async function parseBookmark(response: Response) {
-  try {
-    const json = await response.json();
-    const entry = v.parse(bookmarkEntry, json);
+async function parseBookmarkData(response: Response): Promise<BookmarkEntry> {
+  const json = await response.json();
+  let entry = v.parse(bookmarkEntry, json);
 
-    // Convert timestamp to canonical date format
-    if (entry) {
-      entry.bookmarks = entry.bookmarks.map((bookmark) => {
-        return {
-          ...bookmark,
-          timestamp: convertToCanonicalDate(bookmark.timestamp),
-        };
-      });
-    }
-
-    return entry;
-  } catch (ex) {
-    if (ex instanceof SyntaxError) {
-      console.log({ kind: "JSON.parse", error: ex });
-      throw new Error("Invalid JSON response");
-    }
-    if (ex instanceof v.ValiError) {
-      console.log({ kind: "valibot", error: ex });
-      throw new Error("Invalid JSON response");
-    }
-    throw new Error("Unknown error");
+  if (entry) {
+    entry = {
+      ...entry,
+      bookmarks: entry.bookmarks
+        .filter((b) => b.comment !== "")
+        .map((b) => {
+          return {
+            ...b,
+            timestamp: convertToCanonicalDate(b.timestamp),
+          };
+        }),
+    };
   }
+
+  return entry;
 }
 
 function convertToCanonicalDate(timestamp: string): string {
-  return parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm xxx", new Date()).toISOString();
-}
-
-/**
- * Hatena Bookmark Entry API returns '500 Internal Server Error' when the request takes too long.
- * This function estimates if the request has likely timed out based on elapsed time.
- */
-function isProbablyTimeout(beginTime: number): boolean {
-  return Date.now() - beginTime > 5 * 1000;
+  return formatISO(parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm xxx", new Date()));
 }

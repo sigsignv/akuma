@@ -1,7 +1,8 @@
 import { useAsyncValue } from "react-router";
 import type { NewsItem } from "~/api/hackernews";
+import AsyncPanel from "./AsyncPanel";
 import ElapsedTime from "./ElapsedTime";
-import Section from "./Section";
+import Notice from "./Notice";
 
 type HackerNewsProps = {
   promise: Promise<unknown>;
@@ -15,14 +16,13 @@ export default function HackerNews({ promise, url }: HackerNewsProps) {
   link.searchParams.set("query", url);
 
   return (
-    <Section
-      title="Hacker News"
-      link={link.toString()}
-      linkText="Hacker News を見る"
+    <AsyncPanel
+      defaultTitle="Hacker News"
+      link={{ url: link.toString(), text: "Hacker News を見る" }}
       promise={promise}
     >
       <HackerNewsView />
-    </Section>
+    </AsyncPanel>
   );
 }
 
@@ -30,11 +30,7 @@ function HackerNewsView() {
   const news = useAsyncValue() as NewsItem[];
 
   if (news.length === 0) {
-    return (
-      <div className="flex justify-center items-center">
-        <p className="m-4">記事はありません</p>
-      </div>
-    );
+    return <Notice>記事はありません</Notice>;
   }
 
   return (

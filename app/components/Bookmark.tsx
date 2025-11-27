@@ -1,25 +1,29 @@
 import { useState } from "react";
 import { useAsyncValue } from "react-router";
-import type { getBookmark } from "~/routes/api.bookmark";
+import type { BookmarkEntry } from "~/api/bookmark";
+import AsyncPanel from "./AsyncPanel";
 import ElapsedTime from "./ElapsedTime";
 import Icon from "./Icon";
-import Section from "./Section";
-
-type Bookmarks = Awaited<ReturnType<typeof getBookmark>>;
+import Notice from "./Notice";
 
 type BookmarkProps = {
-  promise: Promise<Bookmarks>;
+  promise: Promise<BookmarkEntry>;
   url: string;
 };
 
 export default function Bookmark({ promise, url }: BookmarkProps) {
-  const [title, setTitle] = useState("はてなブックマーク");
+  const [title, setTitle] = useState("");
   const [link, setLink] = useState(generateFallbackUrl(url));
 
   return (
-    <Section title={title} link={link} linkText="はてなブックマークを見る" promise={promise}>
+    <AsyncPanel
+      title={title}
+      defaultTitle="はてなブックマーク"
+      link={{ url: link, text: "はてなブックマークを見る" }}
+      promise={promise}
+    >
       <BookmarkView setTitle={setTitle} setLink={setLink} />
-    </Section>
+    </AsyncPanel>
   );
 }
 
@@ -29,7 +33,7 @@ type ViewProps = {
 };
 
 function BookmarkView({ setTitle, setLink }: ViewProps) {
-  const b = useAsyncValue() as Bookmarks | null;
+  const b = useAsyncValue() as BookmarkEntry;
 
   const comments = b?.bookmarks.length ?? 0;
   const total = b?.count ?? 0;
@@ -40,11 +44,7 @@ function BookmarkView({ setTitle, setLink }: ViewProps) {
   }
 
   if (!b || comments === 0) {
-    return (
-      <div className="flex justify-center items-center">
-        <p className="m-4">コメントはありません</p>
-      </div>
-    );
+    return <Notice>コメントはありません</Notice>;
   }
 
   return (

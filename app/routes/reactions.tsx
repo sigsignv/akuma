@@ -1,4 +1,6 @@
 import { redirect } from "react-router";
+import { getBookmark } from "~/api/bookmark";
+import { getPost } from "~/api/bsky";
 import { getStories } from "~/api/hackernews";
 import Bookmark from "~/components/Bookmark";
 import Bsky from "~/components/Bsky";
@@ -6,8 +8,6 @@ import HackerNews from "~/components/HackerNews";
 import LocationBar from "~/components/LocationBar";
 import { isValidUrl } from "~/utils";
 import type { Route } from "./+types/reactions";
-import { getBookmark } from "./api.bookmark";
-import { getBskyPost } from "./api.bsky";
 
 export function meta() {
   return [
@@ -24,11 +24,13 @@ export async function loader({ request }: Route.LoaderArgs) {
     throw redirect("/");
   }
 
+  const signal = AbortSignal.timeout(3000);
+
   return {
     kind: "content",
     url,
-    bookmark: getBookmark({ url }),
-    posts: getBskyPost({ url }),
+    bookmark: getBookmark({ url, signal }),
+    posts: getPost({ url, signal }),
     news: getStories({ query: url }),
   };
 }

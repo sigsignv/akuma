@@ -1,5 +1,5 @@
-import { formatDistanceToNowStrict } from "date-fns";
 import type { FormatDistanceToNowStrictOptions } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 import { ja } from "date-fns/locale";
 
 type ElapsedTimeProps = {
@@ -8,11 +8,9 @@ type ElapsedTimeProps = {
 };
 
 export default function ElapsedTime({ date, locale }: ElapsedTimeProps) {
-  return (
-    <time dateTime={date}>
-      {formatDistanceToNowStrict(new Date(date), localeToOptions(locale))}
-    </time>
-  );
+  const options = localeToOptions(locale);
+
+  return <time dateTime={date}>{formatDistanceToNowStrict(date, options)}</time>;
 }
 
 function localeToOptions(locale?: string): FormatDistanceToNowStrictOptions {

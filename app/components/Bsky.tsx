@@ -1,26 +1,31 @@
 import { useState } from "react";
 import { useAsyncValue } from "react-router";
+import type { PostData, getPost } from "~/api/bsky";
 import ElapsedTime from "~/components/ElapsedTime";
 import Icon from "~/components/Icon";
-import type { getBskyPost } from "../routes/api.bsky";
-import type { Comments } from "./List";
-import Section from "./Section";
+import AsyncPanel from "./AsyncPanel";
+import Notice from "./Notice";
 
 type BlueskyProps = {
-  promise: ReturnType<typeof getBskyPost>;
+  promise: ReturnType<typeof getPost>;
   url: string;
 };
 
 export default function Bsky({ promise, url }: BlueskyProps) {
-  const [title, setTitle] = useState("Bluesky");
+  const [title, setTitle] = useState("");
 
   const link = new URL("https://bsky.app/search");
   link.searchParams.set("q", url);
 
   return (
-    <Section title={title} link={link.toString()} linkText="bsky.app を見る" promise={promise}>
+    <AsyncPanel
+      title={title}
+      defaultTitle="Bluesky"
+      link={{ url: link.toString(), text: "bsky.app を見る" }}
+      promise={promise}
+    >
       <BskyView setTitle={setTitle} />
-    </Section>
+    </AsyncPanel>
   );
 }
 
@@ -29,16 +34,12 @@ type ViewProps = {
 };
 
 function BskyView({ setTitle }: ViewProps) {
-  const { comments } = useAsyncValue() as { comments: Comments };
+  const { comments } = useAsyncValue() as PostData;
 
   setTitle(`Bluesky (${comments.length})`);
 
   if (comments.length === 0) {
-    return (
-      <div className="flex justify-center items-center">
-        <p className="m-4">ポストはありません</p>
-      </div>
-    );
+    return <Notice>ポストはありません</Notice>;
   }
 
   return (
