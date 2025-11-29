@@ -1,19 +1,11 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
 	"files": {
-		"include": [
-			"app/**/*.ts",
-			"app/**/*.tsx",
-			"workers/**/*.ts",
-			"*.config.ts"
-		]
+		"includes": ["**/*.{ts,tsx}", "!.react-router/**"]
 	},
 	"formatter": {
 		"enabled": true,
 		"useEditorconfig": true
-	},
-	"organizeImports": {
-		"enabled": true
 	},
 	"linter": {
 		"enabled": true,
@@ -21,9 +13,12 @@
 			"recommended": true
 		}
 	},
-	"javascript": {
-		"formatter": {
-			"lineWidth": 100
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": "on"
+			}
 		}
 	}
 }
