@@ -49,13 +49,13 @@ export default function Reactions({ loaderData }: Route.ComponentProps) {
       <main className="flex-grow container mx-auto max-w-xl p-4">
         <LocationBar url={url} />
         <div className="py-4">
-          <div id="bookmark">
+          <div className="bookmark">
             <Bookmark promise={bookmark} url={url} />
           </div>
-          <div id="bsky">
+          <div className="bsky">
             <Bsky promise={posts} url={url} />
           </div>
-          <div id="hackernews">
+          <div className="hackernews">
             <HackerNews promise={news} url={url} />
           </div>
         </div>
