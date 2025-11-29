@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAsyncValue } from "react-router";
-import type { PostData, getPost } from "~/api/bsky";
+import type { getPost, PostData } from "~/api/bsky";
 import ElapsedTime from "~/components/ElapsedTime";
 import Icon from "~/components/Icon";
 import AsyncPanel from "./AsyncPanel";
@@ -49,7 +49,10 @@ function BskyView({ setTitle }: ViewProps) {
           <div className="flex gap-2">
             <div className="flex-shrink-0">
               <a href={c.author.link} target="_blank" rel="noreferrer">
-                <Icon src={c.author.icon} alt={`${c.author.name}'s profile icon`} />
+                <Icon
+                  src={c.author.icon}
+                  alt={`${c.author.name}'s profile icon`}
+                />
               </a>
             </div>
             <div className="flex-grow">

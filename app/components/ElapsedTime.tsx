@@ -10,7 +10,9 @@ type ElapsedTimeProps = {
 export default function ElapsedTime({ date, locale }: ElapsedTimeProps) {
   const options = localeToOptions(locale);
 
-  return <time dateTime={date}>{formatDistanceToNowStrict(date, options)}</time>;
+  return (
+    <time dateTime={date}>{formatDistanceToNowStrict(date, options)}</time>
+  );
 }
 
 function localeToOptions(locale?: string): FormatDistanceToNowStrictOptions {

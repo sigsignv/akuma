@@ -48,7 +48,10 @@ function HackerNewsView() {
                 <span> | </span>
                 <span>{story.comments} comments</span>
                 <span> | </span>
-                <ElapsedTime date={story.created_at.toUTCString()} locale="ja" />
+                <ElapsedTime
+                  date={story.created_at.toUTCString()}
+                  locale="ja"
+                />
               </span>
             </div>
           </li>

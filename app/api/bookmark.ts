@@ -29,7 +29,9 @@ class BookmarkError extends Error {
   }
 }
 
-export async function getBookmark(options: SearchOptions): Promise<BookmarkEntry> {
+export async function getBookmark(
+  options: SearchOptions,
+): Promise<BookmarkEntry> {
   let response: Response;
 
   try {
@@ -69,7 +71,11 @@ async function fetchBookmarkData({
 
   const beginTime = Date.now();
   const response = await client(endpoint, { headers, signal });
-  console.log({ kind: "ResponseTime", service: "bookmark", timeMs: Date.now() - beginTime });
+  console.log({
+    kind: "ResponseTime",
+    service: "bookmark",
+    timeMs: Date.now() - beginTime,
+  });
 
   return response;
 }
@@ -96,5 +102,7 @@ async function parseBookmarkData(response: Response): Promise<BookmarkEntry> {
 }
 
 function convertToCanonicalDate(timestamp: string): string {
-  return formatISO(parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm xxx", new Date()));
+  return formatISO(
+    parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm xxx", new Date()),
+  );
 }

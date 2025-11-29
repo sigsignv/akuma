@@ -49,7 +49,11 @@ export async function getPost(options: SearchOptions) {
   };
 }
 
-async function fetchPostData({ url, signal, client = fetch }: SearchOptions): Promise<AtpResponse> {
+async function fetchPostData({
+  url,
+  signal,
+  client = fetch,
+}: SearchOptions): Promise<AtpResponse> {
   const agent = new AtpAgent({
     service: "https://api.bsky.app",
     fetch: client,
@@ -61,7 +65,11 @@ async function fetchPostData({ url, signal, client = fetch }: SearchOptions): Pr
 
   const beginTime = Date.now();
   const response = await agent.app.bsky.feed.searchPosts(params, { signal });
-  console.log({ kind: "ResponseTime", service: "bsky", timeMs: Date.now() - beginTime });
+  console.log({
+    kind: "ResponseTime",
+    service: "bsky",
+    timeMs: Date.now() - beginTime,
+  });
 
   return response;
 }
@@ -71,12 +79,20 @@ async function validatePostData(posts: PostView[]) {
 
   for (const post of posts) {
     if (isUnlistedPost(post)) {
-      console.log({ service: "bsky", kind: "UnlistedPost", url: generateUrl(post) });
+      console.log({
+        service: "bsky",
+        kind: "UnlistedPost",
+        url: generateUrl(post),
+      });
       continue;
     }
 
     const { createdAt, text } = post.record;
-    if (typeof createdAt !== "string" || typeof text !== "string" || text === "") {
+    if (
+      typeof createdAt !== "string" ||
+      typeof text !== "string" ||
+      text === ""
+    ) {
       continue;
     }
 

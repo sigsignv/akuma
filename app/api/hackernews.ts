@@ -15,7 +15,9 @@ type GetStoriesOptions = {
   query: string;
 };
 
-export async function getStories({ query }: GetStoriesOptions): Promise<NewsItem[]> {
+export async function getStories({
+  query,
+}: GetStoriesOptions): Promise<NewsItem[]> {
   let results: HackerNewsSearchResult;
 
   const beginTime = Date.now();
@@ -31,7 +33,11 @@ export async function getStories({ query }: GetStoriesOptions): Promise<NewsItem
     return [];
   }
 
-  console.log({ kind: "ResponseTime", service: "hackernews", timeMs: Date.now() - beginTime });
+  console.log({
+    kind: "ResponseTime",
+    service: "hackernews",
+    timeMs: Date.now() - beginTime,
+  });
 
   return results.hits.map((item) => {
     if (item.kind !== "story") {
