@@ -12,7 +12,9 @@ export default function Index() {
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow container mx-auto flex flex-col items-center justify-center p-4 -mt-16">
         <div className="text-center mb-6">
-          <h1 className="text-5xl font-bold mb-2 text-gray-800 dark:text-white">Akuma</h1>
+          <h1 className="text-5xl font-bold mb-2 text-gray-800 dark:text-white">
+            Akuma
+          </h1>
         </div>
         <div className="w-full max-w-2xl">
           <LocationBar />

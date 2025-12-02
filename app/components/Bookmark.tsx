@@ -53,7 +53,11 @@ function BookmarkView({ setTitle, setLink }: ViewProps) {
         <li key={c.user} className="space-y-2">
           <div className="flex gap-2">
             <div className="flex-shrink-0">
-              <a href={`https://b.hatena.ne.jp/${c.user}/`} target="_blank" rel="noreferrer">
+              <a
+                href={`https://b.hatena.ne.jp/${c.user}/`}
+                target="_blank"
+                rel="noreferrer"
+              >
                 <Icon
                   src={`https://cdn.profile-image.st-hatena.com/users/${c.user}/profile.png`}
                   alt={`${c.user}'s profile icon`}

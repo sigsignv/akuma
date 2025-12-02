@@ -8,7 +8,11 @@ export type AsyncProps<T> = PanelProps & {
   promise: Promise<T>;
 };
 
-export default function AsyncPanel<T>({ children, promise, ...props }: AsyncProps<T>) {
+export default function AsyncPanel<T>({
+  children,
+  promise,
+  ...props
+}: AsyncProps<T>) {
   return (
     <React.Suspense fallback={<AsyncPanelSkeleton {...props} />}>
       <Await resolve={promise} errorElement={<AsyncPanelError {...props} />}>

@@ -8,7 +8,12 @@ export type PanelProps = {
   children: React.ReactNode;
 };
 
-export default function Panel({ title, defaultTitle, link, children }: PanelProps) {
+export default function Panel({
+  title,
+  defaultTitle,
+  link,
+  children,
+}: PanelProps) {
   return (
     <details className="pt-4 pb-4" open={true}>
       <summary className="text-2xl font-bold cursor-pointer select-none">
