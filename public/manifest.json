@@ -15,7 +15,7 @@
     "start_url": "/",
     "display": "minimal-ui",
     "share_target": {
-        "action": "/share",
+        "action": "/peek",
         "method": "GET",
         "params": {
             "text": "text",
