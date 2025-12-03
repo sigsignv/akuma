@@ -6,7 +6,7 @@ type LocationBarProps = {
 
 export default function LocationBar({ url }: LocationBarProps) {
   return (
-    <Form method="get" action="/reactions">
+    <Form method="get" action="/peek">
       <div className="flex">
         <input
           className="grow p-2 border-y border-s rounded-s"
