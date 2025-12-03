@@ -1,19 +1,39 @@
 import { redirect } from "react-router";
+import { getBookmark } from "~/api/bookmark";
+import { getPost } from "~/api/bsky";
+import { getStories } from "~/api/hackernews";
+import Viewer from "~/viewer/Viewer";
 import type { Route } from "./+types/peek";
 
 export function loader({ request }: Route.LoaderArgs) {
   const url = extractUrl(request);
 
-  throw redirect(`/reactions?url=${encodeURIComponent(url)}`);
+  const signal = AbortSignal.timeout(3000);
+
+  return {
+    url,
+    bookmark: getBookmark({ url, signal }),
+    posts: getPost({ url, signal }),
+    news: getStories({ query: url }),
+  };
 }
 
-export default function Peek() {}
+export default function Peek({ loaderData }: Route.ComponentProps) {
+  const { url, bookmark, posts, news } = loaderData;
+
+  return (
+    <div>
+      <title>Peek - Akuma</title>
+      <Viewer url={url} bookmark={bookmark} posts={posts} news={news} />
+    </div>
+  );
+}
 
 function extractUrl(request: Request) {
   const u = new URL(request.url);
 
   const url = u.searchParams.get("url");
-  if (url && URL.canParse(url)) {
+  if (url && URL.canParse(url) && isAbsoluteUrl(url)) {
     return url;
   }
 
@@ -31,4 +51,8 @@ function extractUrl(request: Request) {
   }
 
   throw redirect("/");
+}
+
+function isAbsoluteUrl(url: string) {
+  return url.startsWith("https://") || url.startsWith("http://");
 }
