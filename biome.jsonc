@@ -1,7 +1,11 @@
 {
 	"$schema": "https://biomejs.dev/schemas/2.3.8/schema.json",
 	"files": {
-		"includes": ["**/*.{ts,tsx}", "!.react-router"]
+		"includes": [
+			"**/*.{ts,tsx}",
+			"!.react-router",
+			"!worker-configuration.d.ts"
+		]
 	},
 	"formatter": {
 		"enabled": true,

@@ -9,7 +9,8 @@
     "deploy": "npm run build && wrangler deploy",
     "cf-typegen": "wrangler types",
     "typecheck": "npm run cf-typegen && react-router typegen && tsc -b",
-    "postinstall": "npm run cf-typegen"
+    "postinstall": "npm run cf-typegen",
+    "test": "vitest"
   },
   "dependencies": {
     "@atproto/api": "^0.15.5",
@@ -33,6 +34,7 @@
     "typescript": "^5.9.3",
     "vite": "^7.2.6",
     "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^4.0.15",
     "wrangler": "^4.51.0"
   }
 }
