@@ -1,5 +1,6 @@
 import { formatISO, parse } from "date-fns";
 import * as v from "valibot";
+import { fetchBookmark } from "~/viewer/bookmark";
 import type { SearchOptions } from "./types";
 
 const bookmarkComment = v.object({
@@ -32,20 +33,13 @@ class BookmarkError extends Error {
 export async function getBookmark(
   options: SearchOptions,
 ): Promise<BookmarkEntry> {
-  let response: Response;
-
-  try {
-    response = await fetchBookmarkData(options);
-  } catch (ex) {
-    if (ex instanceof DOMException && ex.name === "TimeoutError") {
-      throw new BookmarkError("リクエストがタイムアウトしました", ex);
-    }
-    throw ex;
-  }
-
-  if (!response.ok) {
-    throw new BookmarkError("ブックマークの取得に失敗しました");
-  }
+  const beginTime = performance.now();
+  const response = await fetchBookmark(options.url, { signal: options.signal });
+  console.log({
+    kind: "ResponseTime",
+    service: "bookmark",
+    timeMs: performance.now() - beginTime,
+  });
 
   try {
     return parseBookmarkData(response);
@@ -55,29 +49,6 @@ export async function getBookmark(
     }
     throw ex;
   }
-}
-
-async function fetchBookmarkData({
-  url,
-  signal,
-  client = fetch,
-}: SearchOptions): Promise<Response> {
-  const endpoint = new URL("https://b.hatena.ne.jp/entry/jsonlite/");
-  endpoint.searchParams.set("url", url);
-
-  const headers = new Headers({
-    "User-Agent": "akuma",
-  });
-
-  const beginTime = Date.now();
-  const response = await client(endpoint, { headers, signal });
-  console.log({
-    kind: "ResponseTime",
-    service: "bookmark",
-    timeMs: Date.now() - beginTime,
-  });
-
-  return response;
 }
 
 async function parseBookmarkData(response: Response): Promise<BookmarkEntry> {
