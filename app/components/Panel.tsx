@@ -1,3 +1,5 @@
+import Collapsible from "./Collapsible";
+
 export type PanelProps = {
   title?: string;
   defaultTitle: string;
@@ -15,10 +17,7 @@ export default function Panel({
   children,
 }: PanelProps) {
   return (
-    <details className="pt-4 pb-4" open={true}>
-      <summary className="text-2xl font-bold cursor-pointer select-none">
-        {title || defaultTitle}
-      </summary>
+    <Collapsible title={title || defaultTitle}>
       <div>{children}</div>
       <div className="flex justify-center pt-4">
         <a href={link.url} target="_blank" rel="noreferrer">
@@ -27,6 +26,6 @@ export default function Panel({
           </span>
         </a>
       </div>
-    </details>
+    </Collapsible>
   );
 }
