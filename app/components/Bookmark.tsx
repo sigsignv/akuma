@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useAsyncValue } from "react-router";
 import type { BookmarkEntry } from "~/api/bookmark";
+import ElapsedTime from "~/viewer/bookmark/ElapsedTime";
 import AsyncPanel from "./AsyncPanel";
-import ElapsedTime from "./ElapsedTime";
 import Icon from "./Icon";
 import Notice from "./Notice";
 
@@ -74,7 +74,7 @@ function BookmarkView({ setTitle, setLink }: ViewProps) {
                   rel="noreferrer"
                 >
                   <span className="text-sm text-gray-600 no-underline hover:underline">
-                    <ElapsedTime date={c.timestamp} locale="ja" />
+                    <ElapsedTime timestamp={c.timestamp} />
                   </span>
                 </a>
               </div>

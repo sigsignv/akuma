@@ -1,4 +1,3 @@
-import { formatISO, parse } from "date-fns";
 import * as v from "valibot";
 import { fetchBookmark } from "~/viewer/bookmark";
 import type { SearchOptions } from "./types";
@@ -58,22 +57,9 @@ async function parseBookmarkData(response: Response): Promise<BookmarkEntry> {
   if (entry) {
     entry = {
       ...entry,
-      bookmarks: entry.bookmarks
-        .filter((b) => b.comment !== "")
-        .map((b) => {
-          return {
-            ...b,
-            timestamp: convertToCanonicalDate(b.timestamp),
-          };
-        }),
+      bookmarks: entry.bookmarks.filter((b) => b.comment !== ""),
     };
   }
 
   return entry;
-}
-
-function convertToCanonicalDate(timestamp: string): string {
-  return formatISO(
-    parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm xxx", new Date()),
-  );
 }
