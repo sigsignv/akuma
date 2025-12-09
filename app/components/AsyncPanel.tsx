@@ -23,7 +23,7 @@ export default function AsyncPanel<T>({
   link,
 }: AsyncProps<T>) {
   return (
-    <Collapsible title={title || defaultTitle}>
+    <Collapsible defaultTitle={title || defaultTitle}>
       <React.Suspense fallback={<AsyncPanelSkeleton />}>
         <Await resolve={promise} errorElement={<AsyncPanelError />}>
           {children}
