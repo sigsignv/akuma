@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
-import { useAsyncValue } from "react-router";
-import type { getPost, PostData } from "~/api/bsky";
+import type { getPost } from "~/api/bsky";
 import ElapsedTime from "~/components/ElapsedTime";
 import Icon from "~/components/Icon";
-import AsyncPanel from "./AsyncPanel";
 import Notice from "./Notice";
+import Panel from "./Panel";
 
 type BlueskyProps = {
   promise: ReturnType<typeof getPost>;
@@ -12,33 +10,26 @@ type BlueskyProps = {
 };
 
 export default function Bsky({ promise, url }: BlueskyProps) {
-  const [title, setTitle] = useState("");
-
   const link = new URL("https://bsky.app/search");
   link.searchParams.set("q", url);
 
   return (
-    <AsyncPanel
-      title={title}
+    <Panel
       defaultTitle="Bluesky"
       link={{ url: link.toString(), text: "bsky.app を見る" }}
       promise={promise}
     >
-      <BskyView setTitle={setTitle} />
-    </AsyncPanel>
+      {(value) => <BskyView value={value} />}
+    </Panel>
   );
 }
 
-type ViewProps = {
-  setTitle: (title: string) => void;
-};
-
-function BskyView({ setTitle }: ViewProps) {
-  const { comments } = useAsyncValue() as PostData;
-
-  useEffect(() => {
-    setTitle(`Bluesky (${comments.length})`);
-  }, [comments, setTitle]);
+function BskyView({
+  value,
+}: {
+  value: Awaited<ReturnType<typeof getPost>>["value"];
+}) {
+  const comments = value.comments;
 
   if (comments.length === 0) {
     return <Notice>ポストはありません</Notice>;

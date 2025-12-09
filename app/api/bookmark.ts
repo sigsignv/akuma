@@ -1,4 +1,5 @@
 import * as v from "valibot";
+import type { SourceResult } from "~/components/Panel";
 import { fetchBookmark } from "~/viewer/bookmark";
 import type { SearchOptions } from "./types";
 
@@ -31,7 +32,7 @@ class BookmarkError extends Error {
 
 export async function getBookmark(
   options: SearchOptions,
-): Promise<BookmarkEntry> {
+): Promise<SourceResult<BookmarkEntry>> {
   const beginTime = performance.now();
   const response = await fetchBookmark(options.url, { signal: options.signal });
   console.log({
@@ -40,14 +41,26 @@ export async function getBookmark(
     timeMs: performance.now() - beginTime,
   });
 
+  let entry: BookmarkEntry;
   try {
-    return parseBookmarkData(response);
+    entry = await parseBookmarkData(response);
   } catch (ex) {
     if (ex instanceof SyntaxError) {
       throw new BookmarkError("JSON の解析に失敗しました", ex);
     }
     throw ex;
   }
+
+  if (!entry) {
+    return {
+      value: null,
+    };
+  }
+
+  const comments = entry.bookmarks.length;
+  const title = `はてなブックマーク (${comments} / ${entry.count})`;
+
+  return { title, sourceUrl: entry.entry_url, value: entry };
 }
 
 async function parseBookmarkData(response: Response): Promise<BookmarkEntry> {
