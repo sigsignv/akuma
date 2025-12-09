@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAsyncValue } from "react-router";
 import type { getPost, PostData } from "~/api/bsky";
 import ElapsedTime from "~/components/ElapsedTime";
@@ -36,7 +36,9 @@ type ViewProps = {
 function BskyView({ setTitle }: ViewProps) {
   const { comments } = useAsyncValue() as PostData;
 
-  setTitle(`Bluesky (${comments.length})`);
+  useEffect(() => {
+    setTitle(`Bluesky (${comments.length})`);
+  }, [comments, setTitle]);
 
   if (comments.length === 0) {
     return <Notice>ポストはありません</Notice>;

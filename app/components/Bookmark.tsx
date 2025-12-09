@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAsyncValue } from "react-router";
 import type { BookmarkEntry } from "~/api/bookmark";
 import ElapsedTime from "~/viewer/bookmark/ElapsedTime";
@@ -35,15 +35,17 @@ type ViewProps = {
 function BookmarkView({ setTitle, setLink }: ViewProps) {
   const b = useAsyncValue() as BookmarkEntry;
 
-  const comments = b?.bookmarks.length ?? 0;
-  const total = b?.count ?? 0;
-  setTitle(`はてなブックマーク (${comments} / ${total})`);
+  useEffect(() => {
+    const comments = b?.bookmarks.length ?? 0;
+    const total = b?.count ?? 0;
+    setTitle(`はてなブックマーク (${comments} / ${total})`);
 
-  if (b?.entry_url) {
-    setLink(b.entry_url);
-  }
+    if (b?.entry_url) {
+      setLink(b.entry_url);
+    }
+  }, [b, setTitle, setLink]);
 
-  if (!b || comments === 0) {
+  if (!b || b?.bookmarks.length === 0) {
     return <Notice>コメントはありません</Notice>;
   }
 
