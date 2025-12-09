@@ -1,42 +1,45 @@
 import React from "react";
 import { Await, useAsyncError } from "react-router";
+import Collapsible from "./Collapsible";
 import Notice from "./Notice";
-import type { PanelProps } from "./Panel";
-import Panel from "./Panel";
+import SourceLink from "./SourceLink";
 
-export type AsyncProps<T> = PanelProps & {
+export type AsyncProps<T> = {
+  title?: string;
+  defaultTitle: string;
+  link: {
+    url: string;
+    text: string;
+  };
+  children: React.ReactNode;
   promise: Promise<T>;
 };
 
 export default function AsyncPanel<T>({
   children,
   promise,
-  ...props
+  title,
+  defaultTitle,
+  link,
 }: AsyncProps<T>) {
   return (
-    <React.Suspense fallback={<AsyncPanelSkeleton {...props} />}>
-      <Await resolve={promise} errorElement={<AsyncPanelError {...props} />}>
-        <Panel {...props}>{children}</Panel>
-      </Await>
-    </React.Suspense>
+    <Collapsible title={title || defaultTitle}>
+      <React.Suspense fallback={<AsyncPanelSkeleton />}>
+        <Await resolve={promise} errorElement={<AsyncPanelError />}>
+          {children}
+        </Await>
+      </React.Suspense>
+      <SourceLink {...link} />
+    </Collapsible>
   );
 }
 
-function AsyncPanelSkeleton({ title, ...props }: Omit<PanelProps, "children">) {
-  return (
-    <Panel {...props}>
-      <Notice>Loading...</Notice>
-    </Panel>
-  );
+function AsyncPanelSkeleton() {
+  return <Notice>Loading...</Notice>;
 }
 
-function AsyncPanelError({ title, ...props }: Omit<PanelProps, "children">) {
+function AsyncPanelError() {
   const error = useAsyncError() as Error;
-  console.log({ error });
 
-  return (
-    <Panel {...props}>
-      <Notice>{error.message}</Notice>
-    </Panel>
-  );
+  return <Notice>{error.message}</Notice>;
 }
