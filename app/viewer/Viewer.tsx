@@ -1,3 +1,4 @@
+import { useNavigation } from "react-router";
 import Bookmark from "~/components/Bookmark";
 import Bsky from "~/components/Bsky";
 import HackerNews from "~/components/HackerNews";
@@ -17,6 +18,8 @@ type Props = {
 };
 
 export default function Viewer({ url, bookmark, posts, news }: Props) {
+  const navigation = useNavigation();
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="bg-gray-800 text-white p-4">
@@ -27,7 +30,10 @@ export default function Viewer({ url, bookmark, posts, news }: Props) {
 
       <main className="flex-grow container mx-auto max-w-xl p-4">
         <LocationBar url={url} />
-        <div className="py-4">
+        <div
+          className="py-4"
+          style={{ opacity: navigation.state === "loading" ? 0.5 : 1.0 }}
+        >
           <div className="bookmark">
             <Bookmark promise={bookmark} url={url} />
           </div>
