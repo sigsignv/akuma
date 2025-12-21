@@ -1,5 +1,6 @@
-import { formatISO, parse } from "date-fns";
 import * as v from "valibot";
+import type { SourceResult } from "~/components/Panel";
+import { fetchBookmark } from "~/viewer/bookmark";
 import type { SearchOptions } from "./types";
 
 const bookmarkComment = v.object({
@@ -31,53 +32,35 @@ class BookmarkError extends Error {
 
 export async function getBookmark(
   options: SearchOptions,
-): Promise<BookmarkEntry> {
-  let response: Response;
+): Promise<SourceResult<BookmarkEntry>> {
+  const beginTime = performance.now();
+  const response = await fetchBookmark(options.url, { signal: options.signal });
+  console.log({
+    kind: "ResponseTime",
+    service: "bookmark",
+    timeMs: performance.now() - beginTime,
+  });
 
+  let entry: BookmarkEntry;
   try {
-    response = await fetchBookmarkData(options);
-  } catch (ex) {
-    if (ex instanceof DOMException && ex.name === "TimeoutError") {
-      throw new BookmarkError("リクエストがタイムアウトしました", ex);
-    }
-    throw ex;
-  }
-
-  if (!response.ok) {
-    throw new BookmarkError("ブックマークの取得に失敗しました");
-  }
-
-  try {
-    return parseBookmarkData(response);
+    entry = await parseBookmarkData(response);
   } catch (ex) {
     if (ex instanceof SyntaxError) {
       throw new BookmarkError("JSON の解析に失敗しました", ex);
     }
     throw ex;
   }
-}
 
-async function fetchBookmarkData({
-  url,
-  signal,
-  client = fetch,
-}: SearchOptions): Promise<Response> {
-  const endpoint = new URL("https://b.hatena.ne.jp/entry/jsonlite/");
-  endpoint.searchParams.set("url", url);
+  if (!entry) {
+    return {
+      value: null,
+    };
+  }
 
-  const headers = new Headers({
-    "User-Agent": "akuma",
-  });
+  const comments = entry.bookmarks.length;
+  const title = `はてなブックマーク (${comments} / ${entry.count})`;
 
-  const beginTime = Date.now();
-  const response = await client(endpoint, { headers, signal });
-  console.log({
-    kind: "ResponseTime",
-    service: "bookmark",
-    timeMs: Date.now() - beginTime,
-  });
-
-  return response;
+  return { title, sourceUrl: entry.entry_url, value: entry };
 }
 
 async function parseBookmarkData(response: Response): Promise<BookmarkEntry> {
@@ -87,22 +70,9 @@ async function parseBookmarkData(response: Response): Promise<BookmarkEntry> {
   if (entry) {
     entry = {
       ...entry,
-      bookmarks: entry.bookmarks
-        .filter((b) => b.comment !== "")
-        .map((b) => {
-          return {
-            ...b,
-            timestamp: convertToCanonicalDate(b.timestamp),
-          };
-        }),
+      bookmarks: entry.bookmarks.filter((b) => b.comment !== ""),
     };
   }
 
   return entry;
-}
-
-function convertToCanonicalDate(timestamp: string): string {
-  return formatISO(
-    parse(`${timestamp} +09:00`, "yyyy/MM/dd HH:mm xxx", new Date()),
-  );
 }

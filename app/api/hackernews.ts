@@ -1,4 +1,5 @@
 import { type HackerNewsSearchResult, hnSearch } from "@sigsign/hn-search";
+import type { SourceResult } from "~/components/Panel";
 
 export type NewsItem =
   | {
@@ -17,7 +18,7 @@ type GetStoriesOptions = {
 
 export async function getStories({
   query,
-}: GetStoriesOptions): Promise<NewsItem[]> {
+}: GetStoriesOptions): Promise<SourceResult<NewsItem[]>> {
   let results: HackerNewsSearchResult;
 
   const beginTime = Date.now();
@@ -30,7 +31,7 @@ export async function getStories({
     });
   } catch (ex) {
     console.error({ ex });
-    return [];
+    return { value: [] };
   }
 
   console.log({
@@ -39,14 +40,14 @@ export async function getStories({
     timeMs: Date.now() - beginTime,
   });
 
-  return results.hits.map((item) => {
+  const items = results.hits.map((item) => {
     if (item.kind !== "story") {
       console.warn("Unexpected item kind:", item.kind);
-      return { kind: "unknown" };
+      return { kind: "unknown" } as const;
     }
 
     return {
-      kind: "story",
+      kind: "story" as const,
       title: item.title,
       url: `https://news.ycombinator.com/item?id=${item.id}`,
       points: item.points,
@@ -54,4 +55,6 @@ export async function getStories({
       created_at: item.created_at,
     };
   });
+
+  return { value: items };
 }

@@ -1,11 +1,10 @@
-import { useAsyncValue } from "react-router";
 import type { NewsItem } from "~/api/hackernews";
-import AsyncPanel from "./AsyncPanel";
 import ElapsedTime from "./ElapsedTime";
 import Notice from "./Notice";
+import Panel, { type SourceResult } from "./Panel";
 
 type HackerNewsProps = {
-  promise: Promise<unknown>;
+  promise: Promise<SourceResult<NewsItem[]>>;
   url: string;
 };
 
@@ -16,19 +15,17 @@ export default function HackerNews({ promise, url }: HackerNewsProps) {
   link.searchParams.set("query", url);
 
   return (
-    <AsyncPanel
+    <Panel
       defaultTitle="Hacker News"
       link={{ url: link.toString(), text: "Hacker News を見る" }}
       promise={promise}
     >
-      <HackerNewsView />
-    </AsyncPanel>
+      {(value) => <HackerNewsView value={value} />}
+    </Panel>
   );
 }
 
-function HackerNewsView() {
-  const news = useAsyncValue() as NewsItem[];
-
+function HackerNewsView({ value: news }: { value: NewsItem[] }) {
   if (news.length === 0) {
     return <Notice>記事はありません</Notice>;
   }

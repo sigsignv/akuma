@@ -1,49 +1,28 @@
-import { useState } from "react";
-import { useAsyncValue } from "react-router";
 import type { BookmarkEntry } from "~/api/bookmark";
-import AsyncPanel from "./AsyncPanel";
-import ElapsedTime from "./ElapsedTime";
+import ElapsedTime from "~/viewer/bookmark/ElapsedTime";
 import Icon from "./Icon";
 import Notice from "./Notice";
+import Panel, { type SourceResult } from "./Panel";
 
 type BookmarkProps = {
-  promise: Promise<BookmarkEntry>;
+  promise: Promise<SourceResult<BookmarkEntry>>;
   url: string;
 };
 
 export default function Bookmark({ promise, url }: BookmarkProps) {
-  const [title, setTitle] = useState("");
-  const [link, setLink] = useState(generateFallbackUrl(url));
-
   return (
-    <AsyncPanel
-      title={title}
+    <Panel
       defaultTitle="はてなブックマーク"
-      link={{ url: link, text: "はてなブックマークを見る" }}
+      link={{ url: generateFallbackUrl(url), text: "はてなブックマークを見る" }}
       promise={promise}
     >
-      <BookmarkView setTitle={setTitle} setLink={setLink} />
-    </AsyncPanel>
+      {(value) => <BookmarkView value={value} />}
+    </Panel>
   );
 }
 
-type ViewProps = {
-  setTitle: (title: string) => void;
-  setLink: (link: string) => void;
-};
-
-function BookmarkView({ setTitle, setLink }: ViewProps) {
-  const b = useAsyncValue() as BookmarkEntry;
-
-  const comments = b?.bookmarks.length ?? 0;
-  const total = b?.count ?? 0;
-  setTitle(`はてなブックマーク (${comments} / ${total})`);
-
-  if (b?.entry_url) {
-    setLink(b.entry_url);
-  }
-
-  if (!b || comments === 0) {
+function BookmarkView({ value: b }: { value: BookmarkEntry }) {
+  if (!b || b?.bookmarks.length === 0) {
     return <Notice>コメントはありません</Notice>;
   }
 
@@ -74,7 +53,7 @@ function BookmarkView({ setTitle, setLink }: ViewProps) {
                   rel="noreferrer"
                 >
                   <span className="text-sm text-gray-600 no-underline hover:underline">
-                    <ElapsedTime date={c.timestamp} locale="ja" />
+                    <ElapsedTime timestamp={c.timestamp} />
                   </span>
                 </a>
               </div>

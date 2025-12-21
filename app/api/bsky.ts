@@ -4,11 +4,6 @@ import type { Response as AtpResponse } from "@atproto/api/dist/client/types/app
 import { filterAccountLabels } from "@atproto/api/dist/moderation/subjects/account";
 import type { SearchOptions } from "./types";
 
-export type PostData = {
-  hitsTotal: number | undefined;
-  comments: CommentProps[];
-};
-
 type User = {
   id: string;
   name?: string;
@@ -43,9 +38,14 @@ export async function getPost(options: SearchOptions) {
 
   const posts = await validatePostData(response.data.posts);
 
-  return {
+  const data = {
     hitsTotal: response.data.hitsTotal,
     comments: posts.slice(0, 10),
+  };
+
+  return {
+    title: `Bluesky (${data.comments.length})`,
+    value: data,
   };
 }
 
