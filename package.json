@@ -23,7 +23,7 @@
     "valibot": "^1.2.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.8",
+    "@biomejs/biome": "2.3.10",
     "@cloudflare/vite-plugin": "^1.16.1",
     "@react-router/dev": "^7.10.0",
     "@tailwindcss/vite": "^4.1.17",
