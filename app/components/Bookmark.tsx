@@ -1,6 +1,6 @@
 import type { BookmarkEntry } from "~/api/bookmark";
+import AvatarLink from "~/viewer/bookmark/AvatarLink";
 import ElapsedTime from "~/viewer/bookmark/ElapsedTime";
-import Icon from "./Icon";
 import Notice from "./Notice";
 import Panel, { type SourceResult } from "./Panel";
 
@@ -32,16 +32,7 @@ function BookmarkView({ value: b }: { value: BookmarkEntry }) {
         <li key={c.user} className="space-y-2">
           <div className="flex gap-2">
             <div className="flex-shrink-0">
-              <a
-                href={`https://b.hatena.ne.jp/${c.user}/`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <Icon
-                  src={`https://cdn.profile-image.st-hatena.com/users/${c.user}/profile.png`}
-                  alt={`${c.user}'s profile icon`}
-                />
-              </a>
+              <AvatarLink user={c.user} />
             </div>
             <div className="flex-grow">
               <div className="flex items-center gap-1">
