@@ -1,11 +1,11 @@
 import { formatDistanceToNowStrict, formatISO, parse } from "date-fns";
 import { ja } from "date-fns/locale";
 
-type props = {
+type Props = {
   timestamp: string;
 };
 
-export default function ElapsedTime({ timestamp }: props) {
+export default function ElapsedTime({ timestamp }: Props) {
   const date = formatToCanonicalDate(timestamp);
 
   return (
