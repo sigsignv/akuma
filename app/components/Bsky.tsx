@@ -1,6 +1,6 @@
 import type { getPost } from "~/api/bsky";
 import ElapsedTime from "~/components/ElapsedTime";
-import Icon from "~/components/Icon";
+import AvatarLink from "~/viewer/bluesky/AvatarLink";
 import Notice from "./Notice";
 import Panel from "./Panel";
 
@@ -41,12 +41,7 @@ function BskyView({
         <li key={c.link} className="space-y-2">
           <div className="flex gap-2">
             <div className="flex-shrink-0">
-              <a href={c.author.link} target="_blank" rel="noreferrer">
-                <Icon
-                  src={c.author.icon}
-                  alt={`${c.author.name}'s profile icon`}
-                />
-              </a>
+              <AvatarLink handle={c.author.id} avatar={c.author.icon} />
             </div>
             <div className="flex-grow">
               <div className="flex items-center gap-1">

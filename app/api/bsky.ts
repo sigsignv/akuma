@@ -8,7 +8,6 @@ type User = {
   id: string;
   name?: string;
   icon?: string;
-  link: string;
 };
 
 type CommentProps = {
@@ -101,7 +100,6 @@ async function validatePostData(posts: PostView[]) {
         id: post.author.handle,
         name: post.author.displayName,
         icon: post.author.avatar,
-        link: `https://bsky.app/profile/${post.author.handle}`,
       },
       content: text,
       createdAt,
