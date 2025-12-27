@@ -1,7 +1,7 @@
 import { AtpAgent } from "@atproto/api";
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import type { Response as AtpResponse } from "@atproto/api/dist/client/types/app/bsky/feed/searchPosts";
-import { filterAccountLabels } from "@atproto/api/dist/moderation/subjects/account";
+import { isUnlistedPost } from "~/viewer/bluesky/utils";
 import type { SearchOptions } from "./types";
 
 type User = {
@@ -115,10 +115,4 @@ function generateUrl(post: PostView): string {
   const id = uri.slice(uri.lastIndexOf("/") + 1);
 
   return `https://bsky.app/profile/${post.author.handle}/post/${id}`;
-}
-
-function isUnlistedPost(post: PostView): boolean {
-  return filterAccountLabels(post.author.labels).some(
-    (label) => label.val === "!no-unauthenticated",
-  );
 }
