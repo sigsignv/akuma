@@ -4,14 +4,10 @@ import type { Response as AtpResponse } from "@atproto/api/dist/client/types/app
 import { isUnlistedPost, parseAtUri } from "~/viewer/bluesky/utils";
 import type { SearchOptions } from "./types";
 
-type User = {
-  id: string;
-  name?: string;
-  icon?: string;
-};
-
 type CommentProps = {
-  author: User;
+  handle: string;
+  avatar?: string;
+  displayName?: string;
   content: string;
   createdAt: string;
   rkey: string;
@@ -96,11 +92,9 @@ async function validatePostData(posts: PostView[]) {
     }
 
     bskyPosts.push({
-      author: {
-        id: post.author.handle,
-        name: post.author.displayName,
-        icon: post.author.avatar,
-      },
+      avatar: post.author.avatar,
+      displayName: post.author.displayName,
+      handle: post.author.handle,
       content: text,
       createdAt,
       rkey: uriParts.rkey,

@@ -37,15 +37,8 @@ function BskyView({
   return (
     <ul className="divide-y divide-gray-200 dark:divide-gray-700">
       {comments.map((c) => (
-        <li key={`${c.author.id}/${c.rkey}`} className="py-2">
-          <Post
-            handle={c.author.id}
-            avatar={c.author.icon}
-            displayName={c.author.name}
-            createdAt={c.createdAt}
-            rkey={c.rkey}
-            content={c.content}
-          />
+        <li key={`${c.handle}/${c.rkey}`} className="py-2">
+          <Post {...c} />
         </li>
       ))}
     </ul>
