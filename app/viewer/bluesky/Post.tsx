@@ -6,7 +6,7 @@ type Props = {
   displayName?: string;
   handle: string;
   createdAt: string;
-  link: string;
+  rkey: string;
   content: string;
 };
 
@@ -15,9 +15,11 @@ export default function Post({
   displayName,
   handle,
   createdAt,
+  rkey,
   content,
-  link,
 }: Props) {
+  const link = `https://bsky.app/profile/${handle}/post/${rkey}`;
+
   return (
     <div className="flex flex-col">
       <div className="flex items-center gap-1">
