@@ -21,8 +21,8 @@ export default function Viewer({ url, bookmark, posts, news }: Props) {
   const navigation = useNavigation();
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-gray-800 text-white p-4">
+    <div className="flex flex-col container mx-auto max-w-xl min-h-screen">
+      <header className="p-4 border-b border-black dark:border-white mb-4">
         <div className="container mx-auto">
           <h1 className="text-2xl font-bold">Akuma</h1>
         </div>
@@ -46,7 +46,7 @@ export default function Viewer({ url, bookmark, posts, news }: Props) {
         </div>
       </main>
 
-      <footer className="bg-gray-800 text-white p-4">
+      <footer className="p-4 border-t border-black dark:border-white">
         <div className="container mx-auto">
           <p>
             <a href="https://github.com/sigsignv/akuma">Source</a>
