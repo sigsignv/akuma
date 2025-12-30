@@ -22,8 +22,8 @@ export default function Comment({ user, timestamp, comment, eid }: Props) {
             <div className="font-bold overflow-hidden text-ellipsis">
               {user}
             </div>
-            <div className="flex-none text-gray-600 dark:text-gray-400">･</div>
-            <div className="flex-none text-gray-600 dark:text-gray-400">
+            <div className="flex-none text-zinc-600 dark:text-zinc-400">･</div>
+            <div className="flex-none text-zinc-600 dark:text-zinc-400">
               <a href={link} rel="noreferrer" className="hover:underline">
                 <ElapsedTime timestamp={timestamp} />
               </a>

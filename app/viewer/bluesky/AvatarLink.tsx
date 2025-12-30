@@ -11,7 +11,7 @@ export default function AvatarLink({ handle, avatar }: Props) {
       alt={`avatar of ${handle}`}
     />
   ) : (
-    <div className="size-6 rounded-full bg-gray-200 dark:bg-gray-800" />
+    <div className="size-6 rounded-full bg-zinc-200 dark:bg-zinc-800" />
   );
 
   return (

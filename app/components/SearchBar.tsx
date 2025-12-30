@@ -17,7 +17,7 @@ export default function SearchBar({ url }: Props) {
             placeholder="e.g., https://example.com/"
           />
           <button
-            className="absolute top-1 right-1 rounded bg-slate-800 py-1 px-2 border border-transparent text-center text-sm text-white focus:bg-slate-700  active:bg-slate-700 hover:bg-slate-700"
+            className="absolute top-1 right-1 rounded bg-zinc-800 py-1 px-2 border border-transparent text-center text-sm text-white focus:bg-zinc-700  active:bg-zinc-700 hover:bg-zinc-700"
             type="submit"
           >
             ➡

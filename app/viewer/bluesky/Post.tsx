@@ -31,9 +31,9 @@ export default function Post({
             <div className="font-bold overflow-hidden whitespace-nowrap text-ellipsis">
               {displayName}
             </div>
-            <div className="text-gray-600 dark:text-gray-400">@{handle}</div>
-            <div className="flex-none text-gray-600 dark:text-gray-400">･</div>
-            <div className="flex-none text-gray-600 dark:text-gray-400">
+            <div className="text-zinc-600 dark:text-zinc-400">@{handle}</div>
+            <div className="flex-none text-zinc-600 dark:text-zinc-400">･</div>
+            <div className="flex-none text-zinc-600 dark:text-zinc-400">
               <a href={link} rel="noreferrer" className="hover:underline">
                 <ElapsedTime date={createdAt} locale="ja" />
               </a>

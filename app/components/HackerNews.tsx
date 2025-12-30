@@ -40,7 +40,7 @@ function HackerNewsView({ value: news }: { value: NewsItem[] }) {
                 {story.title}
               </a>
               <br />
-              <span className="text-gray-500 text-sm ml-4">
+              <span className="text-zinc-500 text-sm ml-4">
                 <span>{story.points} pt</span>
                 <span> | </span>
                 <span>{story.comments} comments</span>

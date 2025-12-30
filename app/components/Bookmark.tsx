@@ -26,7 +26,7 @@ function BookmarkView({ value: b }: { value: BookmarkEntry }) {
   }
 
   return (
-    <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+    <ul className="divide-y divide-zinc-200 dark:divide-zinc-700">
       {b.bookmarks.map((c) => (
         <li key={c.user} className="py-2">
           <Comment eid={b.eid} {...c} />
