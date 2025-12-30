@@ -1,4 +1,4 @@
-import LocationBar from "~/components/LocationBar";
+import SearchBar from "~/components/SearchBar";
 
 export function meta() {
   return [
@@ -17,7 +17,7 @@ export default function Index() {
           </h1>
         </div>
         <div className="w-full max-w-2xl">
-          <LocationBar />
+          <SearchBar />
         </div>
       </main>
 

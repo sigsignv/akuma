@@ -2,7 +2,7 @@ import { useNavigation } from "react-router";
 import Bookmark from "~/components/Bookmark";
 import Bsky from "~/components/Bsky";
 import HackerNews from "~/components/HackerNews";
-import LocationBar from "~/components/LocationBar";
+import SearchBar from "~/components/SearchBar";
 
 type BookmarkProps = Parameters<typeof Bookmark>[0]["promise"];
 
@@ -29,7 +29,7 @@ export default function Viewer({ url, bookmark, posts, news }: Props) {
       </header>
 
       <main className="flex-grow container mx-auto max-w-xl p-4">
-        <LocationBar url={url} />
+        <SearchBar url={url} />
         <div
           className="py-4"
           style={{ opacity: navigation.state === "loading" ? 0.5 : 1.0 }}
