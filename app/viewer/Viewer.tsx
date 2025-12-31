@@ -21,40 +21,35 @@ export default function Viewer({ url, bookmark, posts, news }: Props) {
   const navigation = useNavigation();
 
   return (
-    <div className="flex flex-col container mx-auto max-w-xl min-h-screen">
-      <header className="p-4 border-b border-black dark:border-white mb-4">
-        <div className="container mx-auto">
+    <div className="container mx-auto max-w-xl">
+      <div className="flex flex-col mx-2 min-h-dvh">
+        <header className="p-4">
           <h1 className="text-2xl font-bold hover:underline">
             <Link to="/">Akuma</Link>
           </h1>
-        </div>
-      </header>
+        </header>
 
-      <main className="flex-grow container mx-auto max-w-xl p-4">
-        <SearchBar url={url} />
-        <div
-          className="py-4"
-          style={{ opacity: navigation.state === "loading" ? 0.5 : 1.0 }}
-        >
-          <div className="bookmark">
-            <Bookmark promise={bookmark} url={url} />
+        <main className="grow p-4 bg-white dark:bg-zinc-900 rounded-lg shadow-md">
+          <SearchBar url={url} />
+          <div style={{ opacity: navigation.state === "loading" ? 0.5 : 1.0 }}>
+            <div className="bookmark">
+              <Bookmark promise={bookmark} url={url} />
+            </div>
+            <div className="bsky">
+              <Bsky promise={posts} url={url} />
+            </div>
+            <div className="hackernews">
+              <HackerNews promise={news} url={url} />
+            </div>
           </div>
-          <div className="bsky">
-            <Bsky promise={posts} url={url} />
-          </div>
-          <div className="hackernews">
-            <HackerNews promise={news} url={url} />
-          </div>
-        </div>
-      </main>
+        </main>
 
-      <footer className="p-4 border-t border-black dark:border-white">
-        <div className="container mx-auto">
+        <footer className="p-4">
           <p>
             <a href="https://github.com/sigsignv/akuma">Source</a>
           </p>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }

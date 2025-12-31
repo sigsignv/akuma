@@ -9,7 +9,7 @@ export function meta() {
 
 export default function Index() {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-white dark:bg-zinc-900">
       <main className="flex-grow container mx-auto flex flex-col items-center justify-center p-4 -mt-16">
         <div className="text-center mb-6">
           <h1 className="text-5xl font-bold mb-2 text-zinc-800 dark:text-white">
