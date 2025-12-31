@@ -32,13 +32,13 @@ export default function Viewer({ url, bookmark, posts, news }: Props) {
         <main className="grow p-4 bg-white dark:bg-zinc-900 rounded-lg shadow-md">
           <SearchBar url={url} />
           <div style={{ opacity: navigation.state === "loading" ? 0.5 : 1.0 }}>
-            <div className="bookmark">
+            <div className="pt-4">
               <Bookmark promise={bookmark} url={url} />
             </div>
-            <div className="bsky">
+            <div className="pt-4">
               <Bsky promise={posts} url={url} />
             </div>
-            <div className="hackernews">
+            <div className="pt-4">
               <HackerNews promise={news} url={url} />
             </div>
           </div>
