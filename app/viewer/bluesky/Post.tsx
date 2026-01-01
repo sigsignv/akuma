@@ -43,7 +43,7 @@ export default function Post({
           </div>
         </div>
       </div>
-      <div className="ms-7">{content}</div>
+      <div className="ms-7 wrap-anywhere">{content}</div>
     </div>
   );
 }

@@ -31,7 +31,7 @@ export default function Comment({ user, timestamp, comment, eid }: Props) {
           </div>
         </div>
       </div>
-      <div className="ms-7">{comment}</div>
+      <div className="ms-7 wrap-anywhere">{comment}</div>
     </div>
   );
 }
