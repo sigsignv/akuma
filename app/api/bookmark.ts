@@ -1,5 +1,5 @@
 import type { SourceResult } from "~/components/Panel";
-import { fetchBookmark } from "~/viewer/bookmark";
+import { fetchBookmark } from "~/viewer/bookmark/api";
 import type { BookmarkEntry } from "~/viewer/bookmark/parse";
 import { parseBookmark } from "~/viewer/bookmark/parse";
 import type { SearchOptions } from "./types";
