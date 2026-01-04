@@ -1,8 +1,8 @@
 import { Link, useNavigation } from "react-router";
-import Bookmark from "~/components/Bookmark";
 import Bsky from "~/components/Bsky";
 import HackerNews from "~/components/HackerNews";
 import SearchBar from "~/components/SearchBar";
+import Bookmark from "./bookmark/Bookmark";
 
 type BookmarkProps = Parameters<typeof Bookmark>[0]["promise"];
 

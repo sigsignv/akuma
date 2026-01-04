@@ -8,3 +8,8 @@ export type ResultPromise<T> = Promise<{
   value: T;
   sourceUrl: string;
 }>;
+
+export type PanelChildrenProps<T> = {
+  url: string;
+  promise: ResultPromise<T>;
+};
