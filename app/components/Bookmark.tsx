@@ -1,5 +1,6 @@
 import Comment from "~/viewer/bookmark/Comment";
 import type { BookmarkEntry } from "~/viewer/bookmark/parse";
+import { createEntryPageUrl } from "~/viewer/bookmark/utils";
 import Notice from "./Notice";
 import Panel, { type SourceResult } from "./Panel";
 
@@ -12,7 +13,7 @@ export default function Bookmark({ promise, url }: BookmarkProps) {
   return (
     <Panel
       defaultTitle="はてなブックマーク"
-      link={{ url: generateFallbackUrl(url), text: "はてなブックマークを見る" }}
+      link={{ url: createEntryPageUrl(url), text: "はてなブックマークを見る" }}
       promise={promise}
     >
       {(value) => <BookmarkView value={value} />}
@@ -34,9 +35,4 @@ function BookmarkView({ value: b }: { value: BookmarkEntry }) {
       ))}
     </ul>
   );
-}
-
-function generateFallbackUrl(url: string): string {
-  const escapedUrl = url.replaceAll(/#/g, "%23");
-  return `https://b.hatena.ne.jp/entry/${escapedUrl}`;
 }
