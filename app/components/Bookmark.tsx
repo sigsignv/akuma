@@ -1,5 +1,5 @@
-import type { BookmarkEntry } from "~/api/bookmark";
 import Comment from "~/viewer/bookmark/Comment";
+import type { BookmarkEntry } from "~/viewer/bookmark/parse";
 import Notice from "./Notice";
 import Panel, { type SourceResult } from "./Panel";
 

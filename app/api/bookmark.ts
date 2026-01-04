@@ -1,24 +1,8 @@
-import * as v from "valibot";
 import type { SourceResult } from "~/components/Panel";
 import { fetchBookmark } from "~/viewer/bookmark";
+import type { BookmarkEntry } from "~/viewer/bookmark/parse";
+import { parseBookmark } from "~/viewer/bookmark/parse";
 import type { SearchOptions } from "./types";
-
-const bookmarkComment = v.object({
-  user: v.string(),
-  timestamp: v.string(),
-  comment: v.string(),
-});
-
-const bookmarkEntry = v.nullable(
-  v.object({
-    count: v.pipe(v.number(), v.integer(), v.minValue(0)),
-    entry_url: v.pipe(v.string(), v.url()),
-    eid: v.pipe(v.string(), v.decimal()),
-    bookmarks: v.array(bookmarkComment),
-  }),
-);
-
-export type BookmarkEntry = v.InferOutput<typeof bookmarkEntry>;
 
 class BookmarkError extends Error {
   constructor(
@@ -63,16 +47,7 @@ export async function getBookmark(
   return { title, sourceUrl: entry.entry_url, value: entry };
 }
 
-async function parseBookmarkData(response: Response): Promise<BookmarkEntry> {
+async function parseBookmarkData(response: Response) {
   const json = await response.json();
-  let entry = v.parse(bookmarkEntry, json);
-
-  if (entry) {
-    entry = {
-      ...entry,
-      bookmarks: entry.bookmarks.filter((b) => b.comment !== ""),
-    };
-  }
-
-  return entry;
+  return parseBookmark(json);
 }
