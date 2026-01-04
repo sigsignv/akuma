@@ -1,11 +1,12 @@
+import type { BookmarkResult } from "~/viewer/bookmark/api";
 import Comment from "~/viewer/bookmark/Comment";
-import type { BookmarkEntry } from "~/viewer/bookmark/parse";
 import { createEntryPageUrl } from "~/viewer/bookmark/utils";
+import type { ResultPromise } from "~/viewer/types";
 import Notice from "./Notice";
-import Panel, { type SourceResult } from "./Panel";
+import Panel from "./Panel";
 
 type BookmarkProps = {
-  promise: Promise<SourceResult<BookmarkEntry>>;
+  promise: ResultPromise<BookmarkResult>;
   url: string;
 };
 
@@ -21,8 +22,8 @@ export default function Bookmark({ promise, url }: BookmarkProps) {
   );
 }
 
-function BookmarkView({ value: b }: { value: BookmarkEntry }) {
-  if (!b || b?.bookmarks.length === 0) {
+function BookmarkView({ value: b }: { value: BookmarkResult }) {
+  if (b.kind === "empty") {
     return <Notice>コメントはありません</Notice>;
   }
 

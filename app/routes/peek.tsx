@@ -1,7 +1,7 @@
 import { redirect } from "react-router";
-import { getBookmark } from "~/api/bookmark";
 import { getPost } from "~/api/bsky";
 import { getStories } from "~/api/hackernews";
+import { getBookmark } from "~/viewer/bookmark/api";
 import Viewer from "~/viewer/Viewer";
 import type { Route } from "./+types/peek";
 
