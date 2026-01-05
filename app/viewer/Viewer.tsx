@@ -45,9 +45,15 @@ export default function Viewer({ url, bookmark, posts, news }: Props) {
         </main>
 
         <footer className="p-4">
-          <p>
-            <a href="https://github.com/sigsignv/akuma">Source</a>
-          </p>
+          <div className="flex justify-center items-center text-zinc-600 dark:text-zinc-400">
+            <a
+              href="https://github.com/sigsignv/akuma"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <span className="iconify mdi--github text-4xl hover:text-zinc-800 dark:hover:text-zinc-300" />
+            </a>
+          </div>
         </footer>
       </div>
     </div>

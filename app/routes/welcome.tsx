@@ -22,15 +22,14 @@ export default function Index() {
       </main>
 
       <footer className="p-4">
-        <div className="container mx-auto text-center text-sm text-zinc-500 dark:text-zinc-400">
-          <p>
-            <a
-              href="https://github.com/sigsignv/akuma"
-              className="hover:text-zinc-700 dark:hover:text-zinc-300"
-            >
-              Source
-            </a>
-          </p>
+        <div className="container mx-auto text-center text-zinc-600 dark:text-zinc-400">
+          <a
+            href="https://github.com/sigsignv/akuma"
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span className="iconify mdi--github text-4xl hover:text-zinc-800 dark:hover:text-zinc-300" />
+          </a>
         </div>
       </footer>
     </div>

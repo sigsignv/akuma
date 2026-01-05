@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@plugin "@iconify/tailwind4" {
+  prefixes: mdi;
+};
+
 @theme {
   --font-sans: -apple-system, BlinkMacSystemFont,
     "Helvetica Neue", Arial,
