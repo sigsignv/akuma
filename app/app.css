@@ -15,6 +15,7 @@
 :root {
   color-scheme: light dark;
   scrollbar-gutter: stable both-edges;
+  text-autospace: normal;
 }
 
 html,
