@@ -31,12 +31,12 @@ function HackerNewsView({ value: news }: { value: NewsItem[] }) {
   }
 
   return (
-    <ul className="space-y-4">
+    <ul className="py-2 space-y-2">
       {news.map((story) =>
         story.kind === "story" ? (
-          <li key={story.url} className="space-y-2">
+          <li key={story.url} className="px-2">
             <div>
-              <a href={story.url} className="text-blue-500 hover:underline">
+              <a href={story.url} className="hover:underline">
                 {story.title}
               </a>
               <br />

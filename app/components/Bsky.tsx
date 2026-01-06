@@ -35,9 +35,9 @@ function BskyView({
   }
 
   return (
-    <ul className="divide-y divide-zinc-200 dark:divide-zinc-700">
+    <ul className="divide-y divide-zinc-300 dark:divide-zinc-600">
       {comments.map((c) => (
-        <li key={`${c.handle}/${c.rkey}`} className="py-2">
+        <li key={`${c.handle}/${c.rkey}`} className="py-2 px-2">
           <Post {...c} />
         </li>
       ))}

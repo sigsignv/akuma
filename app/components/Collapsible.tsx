@@ -15,7 +15,7 @@ export default function Collapsible({ title, children }: Props) {
   return (
     <details open={true} onToggle={onToggle}>
       <summary className="list-none text-xl font-bold cursor-pointer select-none">
-        <div className="flex items-center justify-between gap-1 min-w-0">
+        <div className="flex items-center justify-between gap-1 min-w-0 min-h-12 px-2 border-b border-zinc-300 dark:border-zinc-600">
           <div className="flex-auto overflow-hidden whitespace-nowrap text-ellipsis">
             {title}
           </div>

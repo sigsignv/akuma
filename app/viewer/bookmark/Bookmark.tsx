@@ -14,9 +14,9 @@ export default function Bookmark({
       return <Notice>コメントはありません</Notice>;
     }
     return (
-      <ul className="divide-y divide-zinc-200 dark:divide-zinc-700">
+      <ul className="divide-y divide-zinc-300 dark:divide-zinc-600">
         {r.bookmarks.map((c) => (
-          <li key={c.user} className="py-2">
+          <li key={c.user} className="py-2 px-2">
             <Comment eid={r.eid} {...c} />
           </li>
         ))}

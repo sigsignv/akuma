@@ -22,23 +22,26 @@ export default function Viewer({ url, bookmark, posts, news }: Props) {
 
   return (
     <div className="container mx-auto max-w-xl">
-      <div className="flex flex-col mx-2 min-h-dvh">
+      <div className="flex flex-col mx-2 min-h-dvh md:min-h-auto">
         <header className="p-4">
           <h1 className="text-2xl font-bold hover:underline">
             <Link to="/">Akuma</Link>
           </h1>
         </header>
 
-        <main className="grow p-4 bg-white dark:bg-zinc-900 rounded-lg shadow-md">
-          <SearchBar url={url} />
+        <main className="grow pt-4 bg-white dark:bg-zinc-900 rounded-lg shadow-md">
+          <div className="px-4">
+            <SearchBar url={url} />
+          </div>
+
           <div style={{ opacity: navigation.state === "loading" ? 0.5 : 1.0 }}>
-            <div className="pt-4">
+            <div className="px-2 my-4">
               <Bookmark promise={bookmark} url={url} />
             </div>
-            <div className="pt-4">
+            <div className="px-2 my-4">
               <Bsky promise={posts} url={url} />
             </div>
-            <div className="pt-4">
+            <div className="px-2 my-4">
               <HackerNews promise={news} url={url} />
             </div>
           </div>
