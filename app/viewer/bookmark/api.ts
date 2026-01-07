@@ -111,6 +111,9 @@ function createTitle(comments: number, total: number) {
 if (import.meta.vitest) {
   const { describe, it, expect } = import.meta.vitest;
 
+  /**
+   * @vitest-environment node
+   */
   describe("fetchBookmark", () => {
     it("should fetch bookmark data successfully", async () => {
       const url = "https://example.com/";
