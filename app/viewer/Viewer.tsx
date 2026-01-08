@@ -21,7 +21,7 @@ export default function Viewer({ url, bookmark, posts, news }: Props) {
   const navigation = useNavigation();
 
   return (
-    <div>
+    <div className="py-4">
       <div className="px-4">
         <SearchBar url={url} />
       </div>
