@@ -4,7 +4,7 @@ import { index, layout, route } from "@react-router/dev/routes";
 export default [
   index("./routes/welcome.tsx"),
   layout("./pages/layout.tsx", [
-    route("peek", "./routes/peek.tsx"),
+    route("peek", "./pages/peek.tsx"),
     route("settings", "./pages/settings.tsx"),
   ]),
 ] satisfies RouteConfig;
