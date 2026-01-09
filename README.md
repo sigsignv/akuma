@@ -1,22 +1,24 @@
-# Welcome to React Router!
+# Akuma
 
-A modern, production-ready template for building full-stack React applications using React Router.
+https://akuma.signote.cc/
+
+## Overview
+
+Akuma is a social reaction aggregator that lets you see comments about any web page across multiple social media platforms.
 
 ## Features
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+- Aggregate reactions from multiple social platforms
+  - Hatena Bookmark
+  - Bluesky
+  - Hacker News
+- PWA support with Web Share Target API
 
 ## Getting Started
 
 ### Installation
 
-Install the dependencies:
+Install dependencies:
 
 ```bash
 npm install
@@ -62,10 +64,10 @@ You can then promote a version to production after verification or roll it out p
 npx wrangler versions deploy
 ```
 
-## Styling
+## Author
 
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
+- Sigsign <<sig@signote.cc>>
 
----
+## License
 
-Built with ❤️ using React Router.
+Apache License 2.0
