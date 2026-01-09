@@ -58,10 +58,15 @@ if (import.meta.vitest) {
 
   describe("toThumbnailUrl", () => {
     it("converts avatar URL to thumbnail URL", () => {
-      const avatar = "https://example.com/img/avatar/plain/{DID}/{CID}.png";
+      const avatar = "https://cdn.bsky.app/img/avatar/plain/{DID}/{CID}@jpeg";
       const thumbnail =
-        "https://example.com/img/avatar_thumbnail/plain/{DID}/{CID}.png";
+        "https://cdn.bsky.app/img/avatar_thumbnail/plain/{DID}/{CID}@jpeg";
       expect(toThumbnailUrl(avatar)).toBe(thumbnail);
+    });
+
+    it("returns the same URL if it doesn't match the expected pattern", () => {
+      const avatar = "https://example.com/other/path/avatar.jpg";
+      expect(toThumbnailUrl(avatar)).toBe(avatar);
     });
   });
 }
