@@ -28,9 +28,7 @@ export default function Post({
         </div>
         <div className="flex-auto min-w-0">
           <div className="flex gap-1 text-sm">
-            <div className="font-bold overflow-hidden whitespace-nowrap text-ellipsis">
-              {displayName || handle}
-            </div>
+            <div className="font-bold truncate">{displayName || handle}</div>
             <div className="text-zinc-600 dark:text-zinc-400 text-nowrap">
               @{handle}
             </div>

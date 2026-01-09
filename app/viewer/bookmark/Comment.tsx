@@ -19,9 +19,7 @@ export default function Comment({ user, timestamp, comment, eid }: Props) {
         </div>
         <div className="flex-auto min-w-0">
           <div className="flex gap-1 text-sm">
-            <div className="font-bold overflow-hidden text-ellipsis">
-              {user}
-            </div>
+            <div className="font-bold truncate">{user}</div>
             <div className="flex-none text-zinc-600 dark:text-zinc-400">･</div>
             <div className="flex-none text-zinc-600 dark:text-zinc-400">
               <a href={link} rel="noreferrer" className="hover:underline">
