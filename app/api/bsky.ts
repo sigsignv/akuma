@@ -1,21 +1,16 @@
 import { AtpAgent } from "@atproto/api";
 import type { PostView } from "@atproto/api/dist/client/types/app/bsky/feed/defs";
 import type { Response as AtpResponse } from "@atproto/api/dist/client/types/app/bsky/feed/searchPosts";
-import { filterAccountLabels } from "@atproto/api/dist/moderation/subjects/account";
+import { isUnlistedPost, parseAtUri } from "~/viewer/bluesky/utils";
 import type { SearchOptions } from "./types";
 
-type User = {
-  id: string;
-  name?: string;
-  icon?: string;
-  link: string;
-};
-
 type CommentProps = {
-  author: User;
+  handle: string;
+  avatar?: string;
+  displayName?: string;
   content: string;
   createdAt: string;
-  link: string;
+  rkey: string;
 };
 
 export type BskyPost = CommentProps;
@@ -79,11 +74,6 @@ async function validatePostData(posts: PostView[]) {
 
   for (const post of posts) {
     if (isUnlistedPost(post)) {
-      console.log({
-        service: "bsky",
-        kind: "UnlistedPost",
-        url: generateUrl(post),
-      });
       continue;
     }
 
@@ -96,31 +86,20 @@ async function validatePostData(posts: PostView[]) {
       continue;
     }
 
+    const uriParts = parseAtUri(post.uri);
+    if (!uriParts || uriParts.collection !== "app.bsky.feed.post") {
+      continue;
+    }
+
     bskyPosts.push({
-      author: {
-        id: post.author.handle,
-        name: post.author.displayName,
-        icon: post.author.avatar,
-        link: `https://bsky.app/profile/${post.author.handle}`,
-      },
+      avatar: post.author.avatar,
+      displayName: post.author.displayName,
+      handle: post.author.handle,
       content: text,
       createdAt,
-      link: generateUrl(post),
+      rkey: uriParts.rkey,
     });
   }
 
   return bskyPosts;
-}
-
-function generateUrl(post: PostView): string {
-  const uri = post.uri;
-  const id = uri.slice(uri.lastIndexOf("/") + 1);
-
-  return `https://bsky.app/profile/${post.author.handle}/post/${id}`;
-}
-
-function isUnlistedPost(post: PostView): boolean {
-  return filterAccountLabels(post.author.labels).some(
-    (label) => label.val === "!no-unauthenticated",
-  );
 }

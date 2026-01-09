@@ -1,8 +1,11 @@
-import { redirect } from "react-router";
-import { getBookmark } from "~/api/bookmark";
+import { redirect, useNavigation } from "react-router";
 import { getPost } from "~/api/bsky";
 import { getStories } from "~/api/hackernews";
-import Viewer from "~/viewer/Viewer";
+import Bsky from "~/components/Bsky";
+import HackerNews from "~/components/HackerNews";
+import SearchBar from "~/components/SearchBar";
+import { getBookmark } from "~/viewer/bookmark/api";
+import Bookmark from "~/viewer/bookmark/Bookmark";
 import type { Route } from "./+types/peek";
 
 export function loader({ request }: Route.LoaderArgs) {
@@ -20,12 +23,29 @@ export function loader({ request }: Route.LoaderArgs) {
 
 export default function Peek({ loaderData }: Route.ComponentProps) {
   const { url, bookmark, posts, news } = loaderData;
+  const navigation = useNavigation();
 
   return (
-    <div>
+    <>
       <title>Peek - Akuma</title>
-      <Viewer url={url} bookmark={bookmark} posts={posts} news={news} />
-    </div>
+      <div className="py-4">
+        <div className="px-4">
+          <SearchBar url={url} />
+        </div>
+
+        <div style={{ opacity: navigation.state === "loading" ? 0.5 : 1.0 }}>
+          <div className="px-2 my-4">
+            <Bookmark promise={bookmark} url={url} />
+          </div>
+          <div className="px-2 my-4">
+            <Bsky promise={posts} url={url} />
+          </div>
+          <div className="px-2 my-4">
+            <HackerNews promise={news} url={url} />
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
 

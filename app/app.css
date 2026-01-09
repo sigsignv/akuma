@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+@plugin "@iconify/tailwind4" {
+  prefixes: mdi;
+};
+
 @theme {
   --font-sans: -apple-system, BlinkMacSystemFont,
     "Helvetica Neue", Arial,
@@ -8,11 +12,13 @@
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
+:root {
+  color-scheme: light dark;
+  scrollbar-gutter: stable both-edges;
+  text-autospace: normal;
+}
+
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
-
-  @media (prefers-color-scheme: dark) {
-    color-scheme: dark;
-  }
+  @apply bg-zinc-50 dark:bg-zinc-950;
 }
