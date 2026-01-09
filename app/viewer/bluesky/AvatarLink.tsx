@@ -25,7 +25,17 @@ function isValidAvatarUrl(avatar: unknown): avatar is string {
   return typeof avatar === "string" && URL.canParse(avatar);
 }
 
+/**
+ * Convert a Bluesky avatar URL to a thumbnail URL.
+ *
+ * @see https://bsky.app/profile/jaz.sh/post/3kxybawkodn26
+ */
 function toThumbnailUrl(avatar: string): string {
+  /**
+   * Undocumented but used by the official Bluesky app.
+   *
+   * See also: https://github.com/bluesky-social/social-app/blob/b3f775d1d88957b8cb3f21934c9f70eebb008764/src/view/com/util/UserAvatar.tsx#L616-L624
+   */
   return avatar.replace("/img/avatar/plain/", "/img/avatar_thumbnail/plain/");
 }
 
