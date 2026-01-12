@@ -10,7 +10,7 @@ export default function PageLayout() {
           </h1>
         </header>
 
-        <main className="grow bg-white dark:bg-zinc-900 rounded-lg shadow-md">
+        <main className="grow bg-white dark:bg-zinc-900 rounded-lg border border-zinc-200 dark:border-zinc-800 shadow-md dark:shadow-none">
           <Outlet />
         </main>
 
