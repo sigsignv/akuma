@@ -43,28 +43,28 @@ if (import.meta.vitest) {
   const { describe, it, expect } = import.meta.vitest;
 
   describe("isValidAvatarUrl", () => {
-    it("validates avatar URLs correctly", () => {
+    it("should validate avatar URLs correctly", () => {
       expect(isValidAvatarUrl("https://example.com/avatar.png")).toBe(true);
     });
 
-    it("invalidates non-URL strings", () => {
+    it("should invalidate non-URL strings", () => {
       expect(isValidAvatarUrl("not-a-url")).toBe(false);
     });
 
-    it("invalidates non-string inputs", () => {
+    it("should invalidate non-string inputs", () => {
       expect(isValidAvatarUrl(undefined)).toBe(false);
     });
   });
 
   describe("toThumbnailUrl", () => {
-    it("converts avatar URL to thumbnail URL", () => {
+    it("should convert avatar URL to thumbnail URL", () => {
       const avatar = "https://cdn.bsky.app/img/avatar/plain/{DID}/{CID}@jpeg";
       const thumbnail =
         "https://cdn.bsky.app/img/avatar_thumbnail/plain/{DID}/{CID}@jpeg";
       expect(toThumbnailUrl(avatar)).toBe(thumbnail);
     });
 
-    it("returns the same URL if it doesn't match the expected pattern", () => {
+    it("should return URLs unchanged when they don't match", () => {
       const avatar = "https://example.com/other/path/avatar.jpg";
       expect(toThumbnailUrl(avatar)).toBe(avatar);
     });
