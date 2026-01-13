@@ -4,19 +4,23 @@ type Props = {
 };
 
 export default function AvatarLink({ handle, avatar }: Props) {
-  const icon = isValidAvatarUrl(avatar) ? (
-    <img
-      className="size-6 rounded-full object-cover"
-      src={toThumbnailUrl(avatar)}
-      alt={`avatar of ${handle}`}
-    />
-  ) : (
-    <div className="size-6 rounded-full bg-zinc-200 dark:bg-zinc-800" />
-  );
+  const to = `https://bsky.app/profile/${handle}`;
+
+  if (!isValidAvatarUrl(avatar)) {
+    return (
+      <a href={to} target="_blank" rel="noreferrer">
+        <div className="size-6 rounded-full bg-zinc-200 dark:bg-zinc-700" />
+      </a>
+    );
+  }
 
   return (
-    <a href={`https://bsky.app/profile/${handle}`} rel="noreferrer">
-      {icon}
+    <a href={to} target="_blank" rel="noreferrer">
+      <img
+        className="size-6 rounded-full object-cover"
+        src={toThumbnailUrl(avatar)}
+        alt={`@${handle} avatar`}
+      />
     </a>
   );
 }

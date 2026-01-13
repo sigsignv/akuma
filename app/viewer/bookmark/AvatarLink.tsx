@@ -4,11 +4,15 @@ type Props = {
 
 export default function AvatarLink({ user }: Props) {
   return (
-    <a href={`https://b.hatena.ne.jp/${user}/`} rel="noreferrer">
+    <a
+      href={`https://b.hatena.ne.jp/${user}/`}
+      target="_blank"
+      rel="noreferrer"
+    >
       <img
         className="size-6 rounded-full object-cover"
         src={`https://cdn.profile-image.st-hatena.com/users/${user}/profile.png`}
-        alt={`avatar of ${user}`}
+        alt={`${user} avatar`}
       />
     </a>
   );
