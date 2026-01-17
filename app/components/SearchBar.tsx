@@ -17,10 +17,10 @@ export default function SearchBar({ url }: Props) {
             placeholder="e.g., https://example.com/"
           />
           <button
-            className="absolute top-1 right-1 rounded bg-zinc-800 py-1 px-2 border border-transparent text-center text-sm text-white focus:bg-zinc-700  active:bg-zinc-700 hover:bg-zinc-700"
+            className="absolute top-1 right-1 rounded bg-zinc-800 p-1 border-3 border-transparent text-center text-sm text-white focus:bg-zinc-700 active:bg-zinc-700 hover:bg-zinc-700 select-none flex items-center justify-center"
             type="submit"
           >
-            ➡
+            <span className="iconify mdi--arrow-right-thick h-4 w-4" />
           </button>
         </div>
       </Form>
