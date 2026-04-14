@@ -19,7 +19,7 @@
     "isbot": "^5.1.32",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-router": "^7.13.1",
+    "react-router": "^7.14.0",
     "valibot": "^1.2.0"
   },
   "devDependencies": {
@@ -27,7 +27,7 @@
     "@cloudflare/vite-plugin": "^1.31.2",
     "@iconify-json/mdi": "^1.2.3",
     "@iconify/tailwind4": "^1.2.3",
-    "@react-router/dev": "^7.13.1",
+    "@react-router/dev": "^7.14.0",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^24.10.4",
     "@types/react": "^19.2.14",
