@@ -2,10 +2,11 @@
 
 @plugin "@iconify/tailwind4" {
   prefixes: mdi;
-};
+}
 
 @theme {
-  --font-sans: -apple-system, BlinkMacSystemFont,
+  --font-sans:
+    -apple-system, BlinkMacSystemFont,
     "Helvetica Neue", Arial,
     "Hiragino Kaku Gothic ProN", "Hiragino Sans", "BIZ UDPGothic", Meiryo,
     sans-serif,
