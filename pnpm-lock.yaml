@@ -30,8 +30,8 @@ importers:
         specifier: ^7.16.0
         version: 7.16.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       valibot:
-        specifier: ^1.4.1
-        version: 1.4.1(typescript@6.0.3)
+        specifier: ^1.4.2
+        version: 1.4.2(typescript@6.0.3)
     devDependencies:
       '@biomejs/biome':
         specifier: 2.4.16
@@ -1705,8 +1705,8 @@ packages:
     peerDependencies:
       browserslist: '>= 4.21.0'
 
-  valibot@1.4.1:
-    resolution: {integrity: sha512-klCmFTz2jeDluy9RwX+F884TCiogtdBJ/YaxSx1EOBYXa3NXNWj8kR1jjN8rzluwojJVWWaHJ4r1U5LfICnM3g==}
+  valibot@1.4.2:
+    resolution: {integrity: sha512-gjdCvJ6d3RyHAneqxMYMW9QMCwYMb3jpOO0IyHZV1bnRHFBHrX3VkIILt5XYR0WhwHiH7Mty8ovuPZ/O3gamrg==}
     peerDependencies:
       typescript: '>=5'
     peerDependenciesMeta:
@@ -2507,7 +2507,7 @@ snapshots:
       react-router: 7.16.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       semver: 7.7.4
       tinyglobby: 0.2.17
-      valibot: 1.4.1(typescript@6.0.3)
+      valibot: 1.4.2(typescript@6.0.3)
       vite: 8.0.16(@types/node@25.6.0)(esbuild@0.27.3)(jiti@2.6.1)
       vite-node: 3.2.4(@types/node@25.6.0)(jiti@2.6.1)(lightningcss@1.32.0)(supports-color@10.2.2)
     optionalDependencies:
@@ -2665,7 +2665,7 @@ snapshots:
 
   '@sigsign/hn-search@0.3.0(typescript@6.0.3)':
     dependencies:
-      valibot: 1.4.1(typescript@6.0.3)
+      valibot: 1.4.2(typescript@6.0.3)
     transitivePeerDependencies:
       - typescript
 
@@ -3333,7 +3333,7 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  valibot@1.4.1(typescript@6.0.3):
+  valibot@1.4.2(typescript@6.0.3):
     optionalDependencies:
       typescript: 6.0.3
 
